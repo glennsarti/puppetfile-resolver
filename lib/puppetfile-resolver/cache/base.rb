@@ -3,12 +3,6 @@
 module PuppetfileResolver
   module Cache
     class Base
-      # TODO: Need to make sure I cache everything!
-      # External calls are expensive
-      # def xxx
-      #   @inmemory
-      # end
-
       def initialize(*_)
         @inmemory = {}
       end
