@@ -1,5 +1,5 @@
 ---
-dist: bionic
+dist: trusty
 language: ruby
 cache: bundler
 before_install:
@@ -23,6 +23,12 @@ matrix:
     -
       env: CHECK="rspec"
       stage: spec
+    # Test the oldest ruby we support
+    -
+      env: CHECK="rspec" RUBYGEMS_VERSION=2.7.8
+      stage: spec
+      rvm: 2.1.9
+
 branches:
   only:
     - master

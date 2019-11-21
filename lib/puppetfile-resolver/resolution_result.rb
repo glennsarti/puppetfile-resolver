@@ -13,7 +13,10 @@ module PuppetfileResolver
     end
 
     def specifications
-      @dependency_graph.vertices.transform_values { |vertex| vertex.payload }
+      # Note - Later rubies have `.transform_values` however we support old Ruby versions
+      result = {}
+      @dependency_graph.vertices.each { |key, vertex| result[key] = vertex.payload }
+      result
     end
 
     def to_dot
