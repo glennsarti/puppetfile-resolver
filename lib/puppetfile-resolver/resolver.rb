@@ -69,7 +69,7 @@ module PuppetfileResolver
       if @puppet_version.nil?
         result << Models::PuppetDependency.new('>= 0')
       else
-        result << Models::PuppetDependency.new("=#{@puppet_version}")
+        result << Models::PuppetDependency.new(@puppet_version.to_s)
       end
       result
     end
