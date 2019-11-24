@@ -3,6 +3,7 @@
 require 'puppetfile-resolver/spec_searchers/common'
 require 'uri'
 require 'net/http'
+require 'openssl'
 require 'json'
 
 module PuppetfileResolver
@@ -43,7 +44,18 @@ module PuppetfileResolver
         loops = 0
         loop do
           resolver_ui.debug { "Querying the forge for a module with #{uri}" }
-          response = Net::HTTP.get_response(uri)
+
+          http_options = { :use_ssl => uri.class == URI::HTTPS }
+          # This is a little naughty. Because on Windows Ruby doesn't use the Windows certificate store which has up-to date
+          # CA certs, we can't depend on someone setting the environment variable correctly. So disable HTTPS verification
+          # if the SSL_CERT_FILE env. var. is not set.
+          http_options[:verify_mode] = OpenSSL::SSL::VERIFY_NONE if ENV['SSL_CERT_FILE'].nil?
+
+          response = nil
+          Net::HTTP.start(uri.host, uri.port, http_options) do |http|
+            request = Net::HTTP::Get.new uri
+            response = http.request request
+          end
           raise "Expected HTTP Code 200, but received #{response.code} for URI #{uri}: #{response.inspect}" unless response.code == '200'
 
           reply = ::JSON.parse(response.body)
