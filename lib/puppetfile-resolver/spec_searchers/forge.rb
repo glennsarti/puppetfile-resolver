@@ -46,10 +46,10 @@ module PuppetfileResolver
           resolver_ui.debug { "Querying the forge for a module with #{uri}" }
 
           http_options = { :use_ssl => uri.class == URI::HTTPS }
-          # This is a little naughty. Because on Windows Ruby doesn't use the Windows certificate store which has up-to date
-          # CA certs, we can't depend on someone setting the environment variable correctly. So disable HTTPS verification
-          # if the SSL_CERT_FILE env. var. is not set.
-          http_options[:verify_mode] = OpenSSL::SSL::VERIFY_NONE if ENV['SSL_CERT_FILE'].nil?
+          # Because on Windows Ruby doesn't use the Windows certificate store which has up-to date
+          # CA certs, we can't depend on someone setting the environment variable correctly. So use our
+          # static CA PEM file if SSL_CERT_FILE is not set.
+          http_options[:ca_file] = PuppetfileResolver::Util.static_ca_cert_file if ENV['SSL_CERT_FILE'].nil?
 
           response = nil
           Net::HTTP.start(uri.host, uri.port, http_options) do |http|
