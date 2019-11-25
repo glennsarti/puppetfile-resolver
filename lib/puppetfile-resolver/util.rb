@@ -15,5 +15,9 @@ module PuppetfileResolver
         object
       end
     end
+
+    def self.static_ca_cert_file
+      @static_ca_cert_file ||= File.expand_path(File.join(__dir__, 'data', 'ruby_ca_certs.pem'))
+    end
   end
 end
