@@ -4,13 +4,14 @@ source ENV['GEM_SOURCE'] || 'https://rubygems.org'
 gemspec
 
 group :development do
-  gem 'rake', '>= 10.4', :require => false
   gem 'rspec', '>= 3.2', :require => false
 
   if RUBY_VERSION =~ /^2\.1\./
     gem "rubocop", "<= 0.57.2", :require => false, :platforms => [:ruby, :x64_mingw]
+    gem 'rake', '~> 12.3',      :require => false
   else
     gem "rubocop", ">= 0.60.0", :require => false, :platforms => [:ruby, :x64_mingw]
+    gem 'rake', '>= 10.4',      :require => false
   end
 end
 
