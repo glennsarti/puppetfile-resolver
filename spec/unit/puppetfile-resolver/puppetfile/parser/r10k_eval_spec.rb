@@ -29,9 +29,9 @@ RSpec.shared_examples "a puppetfile parser with valid content" do
     mod 'local', :local => 'some/path'
 
     mod 'svn_min', :svn => 'some-svn-repo'
-
     EOT
   end
+
   let(:puppetfile) { subject.parse(puppetfile_content) }
 
   def get_module(document, title)
@@ -48,6 +48,10 @@ RSpec.shared_examples "a puppetfile parser with valid content" do
 
   it "should detect all of the modules" do
     expect(puppetfile.modules.count).to eq(8)
+  end
+
+  it "should not set any resolver flags" do
+    expect(puppetfile.modules).to all(have_attributes(:resolver_flags => []))
   end
 
   context 'with Forge modules' do
@@ -188,6 +192,181 @@ RSpec.shared_examples "a puppetfile parser with valid content" do
   end
 end
 
+RSpec.shared_examples "a puppetfile parser with magic comments" do
+  def get_module(document, title)
+    document.modules.find { |mod| mod.title == title }
+  end
+
+  context 'with differnt types of magic comments' do
+    let(:flag_name) { 'Dependency/Puppet' }
+    let(:flag) { PuppetfileResolver::Puppetfile::DISABLE_PUPPET_DEPENDENCY_FLAG }
+    let(:flag_name2) { 'Dependency/All' }
+    let(:flag2) { PuppetfileResolver::Puppetfile::DISABLE_ALL_DEPENDENCIES_FLAG }
+
+    let(:puppetfile_content) do
+      <<-EOT
+      forge 'https://fake-forge.puppetlabs.com/'
+
+      mod 'puppetlabs-inline', :latest # resolver:disable #{flag_name}
+
+      # resolver:disable #{flag_name}
+      mod 'puppetlabs-block', :latest
+      # resolver:enable #{flag_name}
+
+      # resolver:disable #{flag_name}
+      # resolver:disable #{flag_name}
+      mod 'puppetlabs-overlap1', :latest
+      # resolver:enable #{flag_name}
+      # resolver:enable #{flag_name}
+
+      # resolver:disable #{flag_name}
+      mod 'puppetlabs-overlap2',
+        :git => 'git@github.com:puppetlabs/puppetlabs-git_branch.git',
+        # resolver:enable #{flag_name}
+        :branch => 'branch'
+
+      mod 'puppetlabs-overlap3',
+        # resolver:disable #{flag_name}
+        :git => 'git@github.com:puppetlabs/puppetlabs-git_branch.git',
+        :branch => 'branch'
+        # resolver:enable #{flag_name}
+
+
+      mod 'puppetlabs-nomagic', :latest
+      EOT
+    end
+    let(:puppetfile) { subject.parse(puppetfile_content) }
+
+    it "should freeze the resolver flags" do
+      puppetfile.modules.each do |mod|
+        expect(mod.resolver_flags).to be_frozen
+      end
+    end
+
+    it 'should add the flag with inline magic comments' do
+      mod = get_module(puppetfile, 'puppetlabs-inline')
+      expect(mod.resolver_flags).to eq([flag])
+    end
+
+    it 'should add the flag with magic comment ranges' do
+      mod = get_module(puppetfile, 'puppetlabs-block')
+      expect(mod.resolver_flags).to eq([flag])
+    end
+
+    it 'should ignore overlapping ranges and only add the flag once' do
+      mod = get_module(puppetfile, 'puppetlabs-overlap1')
+      expect(mod.resolver_flags).to eq([flag])
+    end
+
+    it 'should add the flag with magic comment range if it spans the beginning of a multiline module definition' do
+      mod = get_module(puppetfile, 'puppetlabs-overlap2')
+      expect(mod.resolver_flags).to eq([flag])
+    end
+
+    it 'should add the flag with magic comment range if it spans the end of multiline module definition' do
+      pending('The Ruby Eval method can\'t detect module definition spans and only looks at the first line')
+      mod = get_module(puppetfile, 'puppetlabs-overlap3')
+      expect(mod.resolver_flags).to eq([flag])
+    end
+
+    it 'should not add flags to unaffected modules' do
+      mod = get_module(puppetfile, 'puppetlabs-nomagic')
+      expect(mod.resolver_flags).to eq([])
+    end
+
+    context 'with a flag that is never re-enabled' do
+      let(:puppetfile_content) do
+        <<-EOT
+        forge 'https://fake-forge.puppetlabs.com/'
+
+        mod 'puppetlabs-nomagic', :latest
+
+        # resolver:disable #{flag_name}
+
+        mod 'puppetlabs-block', :latest
+        EOT
+      end
+
+      it 'should not add flags to unaffected modules' do
+        mod = get_module(puppetfile, 'puppetlabs-nomagic')
+        expect(mod.resolver_flags).to eq([])
+      end
+
+      it 'should add the flag to the subsequent modules' do
+        mod = get_module(puppetfile, 'puppetlabs-block')
+        expect(mod.resolver_flags).to eq([flag])
+      end
+    end
+
+    context 'with a flag that is specified more than once' do
+      let(:puppetfile_content) do
+        <<-EOT
+        forge 'https://fake-forge.puppetlabs.com/'
+
+        mod 'puppetlabs-block', :latest # resolver:disable #{flag_name},#{flag_name},#{flag_name},#{flag_name} Some reason
+        EOT
+      end
+
+      it 'should add the flag only once' do
+        mod = get_module(puppetfile, 'puppetlabs-block')
+        expect(mod.resolver_flags).to eq([flag])
+      end
+    end
+
+    context 'with multiple valid flags' do
+      let(:puppetfile_content) do
+        <<-EOT
+        forge 'https://fake-forge.puppetlabs.com/'
+
+        mod 'puppetlabs-block', :latest # resolver:disable #{flag_name},#{flag_name2} Another good reason reason
+        EOT
+      end
+
+      it 'should add the flags' do
+        mod = get_module(puppetfile, 'puppetlabs-block')
+        expect(mod.resolver_flags).to eq([flag, flag2])
+      end
+    end
+
+    context 'with invalid flags' do
+      let(:puppetfile_content) do
+        <<-EOT
+        forge 'https://fake-forge.puppetlabs.com/'
+
+        mod 'puppetlabs-block', :latest # resolver:disable #{flag_name},missing,foo,bar baz Another good reason reason
+        EOT
+      end
+
+      it 'should add the valid flags and ignore the invalid flags' do
+        mod = get_module(puppetfile, 'puppetlabs-block')
+        expect(mod.resolver_flags).to eq([flag])
+      end
+    end
+  end
+
+  context 'with all available flags' do
+    let(:puppetfile_content) do
+      <<-EOT
+      forge 'https://fake-forge.puppetlabs.com/'
+
+      mod 'puppetlabs-magic1', :latest # resolver:disable Dependency/Puppet
+      mod 'puppetlabs-magic2', :latest # resolver:disable Dependency/all
+      EOT
+    end
+    let(:puppetfile) { subject.parse(puppetfile_content) }
+
+    it 'should add the DISABLE_PUPPET_DEPENDENCY_FLAG flag for Dependency/Puppet' do
+      mod = get_module(puppetfile, 'puppetlabs-magic1')
+      expect(mod.resolver_flags).to eq([PuppetfileResolver::Puppetfile::DISABLE_PUPPET_DEPENDENCY_FLAG])
+    end
+
+    it 'should add the DISABLE_ALL_DEPENDENCIES_FLAG flag for Dependency/All' do
+      mod = get_module(puppetfile, 'puppetlabs-magic2')
+      expect(mod.resolver_flags).to eq([PuppetfileResolver::Puppetfile::DISABLE_ALL_DEPENDENCIES_FLAG])
+    end
+  end
+end
+
 RSpec.shared_examples "a puppetfile parser with invalid content" do
   let(:puppetfile_content) do
     <<-EOT
@@ -272,6 +451,8 @@ describe PuppetfileResolver::Puppetfile::Parser::R10KEval do
   let(:subject) { PuppetfileResolver::Puppetfile::Parser::R10KEval }
 
   it_behaves_like "a puppetfile parser with valid content"
+
+  it_behaves_like 'a puppetfile parser with magic comments'
 
   it_behaves_like "a puppetfile parser with invalid content"
 
