@@ -4,6 +4,8 @@ require 'puppetfile-resolver/version'
 Gem::Specification.new do |spec|
   spec.name = 'puppetfile-resolver'
   spec.version = PuppetfileResolver::VERSION.dup
+  spec.authors = ['Glenn Sarti']
+  spec.email = ['glennsarti@users.noreply.github.com']
   spec.homepage = 'https://github.com/lingua-pupuli/puppetfile-resolver/'
   spec.summary = 'Dependency resolver for Puppetfiles'
   spec.description = 'Resolves the Puppet Modules in a Puppetfile with a full dependency graph, including Puppet version checkspec.'
