@@ -10,6 +10,31 @@ describe PuppetfileResolver::Resolver do
   let(:default_resolve_options) { { cache: cache, module_paths: ['??does/not/exist'] } }
   let(:resolve_options) { default_resolve_options }
 
+  RSpec.shared_examples 'a resolver flag' do |flag|
+    context "Given a document without the flag" do
+      let(:puppetfile_module) { PuppetfileResolver::Puppetfile::LocalModule.new('module1') }
+
+      it 'should resolve with error' do
+        expect{ subject.resolve(resolve_options) }.to raise_error do |error|
+          expect(error).to be_a(PuppetfileResolver::Puppetfile::DocumentVersionConflictError)
+          expect(error.puppetfile_modules).to eq([puppetfile_module])
+        end
+      end
+    end
+
+    context "Given a document with the flag" do
+      let(:puppetfile_module) do
+        PuppetfileResolver::Puppetfile::LocalModule.new('module1').tap { |obj| obj.resolver_flags << flag }
+      end
+
+      it 'should resolve without error' do
+        result = subject.resolve(resolve_options)
+
+        expect(result.specifications).to include('module1')
+      end
+    end
+  end
+
   # Helper to create an empty, but valid puppetfile document
   def valid_document(content)
     PuppetfileResolver::Puppetfile::Document.new(content).tap { |d| d.forge_uri = 'https://foo.local' }
@@ -284,6 +309,45 @@ describe PuppetfileResolver::Resolver do
           end
         end
       end
+    end
+
+    context 'Using the resolver flag DISABLE_PUPPET_DEPENDENCY_FLAG' do
+      let(:puppet_version) { '99.99.99' }
+      let(:puppetfile_document) do
+        doc = valid_document('foo')
+        doc.add_module(puppetfile_module)
+        doc
+      end
+
+      before(:each) do
+        # Version 1.0 of Module 1 depends Puppet < 2.x
+        cache.add_local_module_spec('module1', [], '< 2.0.0',          '1.0.0')
+        # Version 2.0 of Module 1 depends Puppet 3.x
+        cache.add_local_module_spec('module1', [], '>= 3.0.0 < 4.0.0', '2.0.0')
+      end
+
+      it_behaves_like 'a resolver flag', PuppetfileResolver::Puppetfile::DISABLE_PUPPET_DEPENDENCY_FLAG
+    end
+
+    context 'Using the resolver flag DISABLE_ALL_DEPENDENCIES_FLAG' do
+      # Need to set allow_missing_modules to false so it raises errors
+      let(:resolve_options) { default_resolve_options.merge(allow_missing_modules: false) }
+      let(:puppetfile_document) do
+        doc = valid_document('foo')
+        doc.add_module(puppetfile_module)
+        doc
+      end
+
+      before(:each) do
+        # Module 1 depends on Module 2, but the version specification makes this not possible
+        cache.add_local_module_spec(
+          'module1',
+          [{ name: 'module2', version_requirement: '>= 2.0.0' }]
+        )
+        cache.add_local_module_spec('module2', [], nil, '1.0.0')
+      end
+
+      it_behaves_like 'a resolver flag', PuppetfileResolver::Puppetfile::DISABLE_ALL_DEPENDENCIES_FLAG
     end
 
     context "Given a document with an explicit module version that does not exist" do
