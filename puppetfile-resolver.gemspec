@@ -6,6 +6,7 @@ Gem::Specification.new do |spec|
   spec.version = PuppetfileResolver::VERSION.dup
   spec.authors = ['Glenn Sarti']
   spec.email = ['glennsarti@users.noreply.github.com']
+  spec.license = 'Apache-2.0'
   spec.homepage = 'https://github.com/lingua-pupuli/puppetfile-resolver/'
   spec.summary = 'Dependency resolver for Puppetfiles'
   spec.description = 'Resolves the Puppet Modules in a Puppetfile with a full dependency graph, including Puppet version checkspec.'
@@ -19,7 +20,4 @@ Gem::Specification.new do |spec|
 
   spec.add_runtime_dependency 'molinillo', '~> 0.6'
   spec.add_runtime_dependency 'semantic_puppet', '~> 1.0'
-
-  spec.authors = ['Glenn Sarti']
-  spec.email = 'glennsarti@users.noreply.github.com'
 end
