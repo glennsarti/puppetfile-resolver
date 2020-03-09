@@ -7,7 +7,7 @@ Gem::Specification.new do |spec|
   spec.authors = ['Glenn Sarti']
   spec.email = ['glennsarti@users.noreply.github.com']
   spec.license = 'Apache-2.0'
-  spec.homepage = 'https://github.com/lingua-pupuli/puppetfile-resolver/'
+  spec.homepage = 'https://glennsarti.github.io/puppetfile-resolver/'
   spec.summary = 'Dependency resolver for Puppetfiles'
   spec.description = 'Resolves the Puppet Modules in a Puppetfile with a full dependency graph, including Puppet version checkspec.'
 
