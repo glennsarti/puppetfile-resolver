@@ -1,0 +1,22 @@
+source ENV['GEM_SOURCE'] || "https://rubygems.org"
+
+gem "rake"
+
+if Gem.win_platform?
+  # Jekyll really hates Windows :-(  Need to use WSL instead
+  raise 'Jekyll really hates Windows :-(  Need to use WSL instead'
+end
+
+# If you want to use GitHub Pages, remove the "gem "jekyll"" above and
+# uncomment the line below. To upgrade, run `bundle update github-pages`.
+gem "github-pages", group: :jekyll_plugins
+
+# If you have any plugins, put them here!
+group :jekyll_plugins do
+  gem "jekyll-feed", "~> 0.6"
+end
+
+# Evaluate Gemfile.local if it exists
+if File.exists? "#{__FILE__}.local"
+  eval(File.read("#{__FILE__}.local"), binding)
+end
