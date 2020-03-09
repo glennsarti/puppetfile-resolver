@@ -13,6 +13,10 @@ group :development do
     gem "rubocop", ">= 0.80.1", :require => false, :platforms => [:ruby, :x64_mingw]
     gem 'rake', '>= 10.4',      :require => false
   end
+
+  gem "yard",          :require => false
+  gem 'redcarpet',     :require => false
+  gem 'github-markup', :require => false
 end
 
 # Evaluate Gemfile.local and ~/.gemfile if they exist
