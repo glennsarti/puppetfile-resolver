@@ -1,0 +1,1039 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>
+  Class: PuppetfileResolver::ResolutionProvider
+  
+    &mdash; Puppetfile Resolver
+  
+</title>
+
+  <link rel="stylesheet" href="../css/style.css" type="text/css" />
+
+  <link rel="stylesheet" href="../css/common.css" type="text/css" />
+
+<script type="text/javascript">
+  pathId = "PuppetfileResolver::ResolutionProvider";
+  relpath = '../';
+</script>
+
+
+  <script type="text/javascript" charset="utf-8" src="../js/jquery.js"></script>
+
+  <script type="text/javascript" charset="utf-8" src="../js/app.js"></script>
+
+
+  </head>
+  <body>
+    <div class="nav_wrap">
+      <iframe id="nav" src="../class_list.html?1"></iframe>
+      <div id="resizer"></div>
+    </div>
+
+    <div id="main" tabindex="-1">
+      <div id="header">
+        <div id="menu">
+  
+    <a href="../_index.html">Index (R)</a> &raquo;
+    <span class='title'><span class='object_link'><a href="../PuppetfileResolver.html" title="PuppetfileResolver (module)">PuppetfileResolver</a></span></span>
+     &raquo; 
+    <span class="title">ResolutionProvider</span>
+  
+</div>
+
+        <div id="search">
+  
+    <a class="full_list_link" id="class_list_link"
+        href="../class_list.html">
+
+        <svg width="24" height="24">
+          <rect x="0" y="4" width="24" height="4" rx="1" ry="1"></rect>
+          <rect x="0" y="12" width="24" height="4" rx="1" ry="1"></rect>
+          <rect x="0" y="20" width="24" height="4" rx="1" ry="1"></rect>
+        </svg>
+    </a>
+  
+</div>
+        <div class="clear"></div>
+      </div>
+
+      <div id="content"><h1>Class: PuppetfileResolver::ResolutionProvider
+  
+  
+  
+</h1>
+<div class="box_info">
+  
+  <dl>
+    <dt>Inherits:</dt>
+    <dd>
+      <span class="inheritName">Object</span>
+      
+        <ul class="fullTree">
+          <li>Object</li>
+          
+            <li class="next">PuppetfileResolver::ResolutionProvider</li>
+          
+        </ul>
+        <a href="#" class="inheritanceTree">show all</a>
+      
+    </dd>
+  </dl>
+  
+
+  
+  
+  
+  
+  <dl>
+      <dt>Includes:</dt>
+      <dd>Molinillo::SpecificationProvider</dd>
+  </dl>
+  
+  
+
+  
+
+  
+  <dl>
+    <dt>Defined in:</dt>
+    <dd>lib/puppetfile-resolver/resolution_provider.rb</dd>
+  </dl>
+  
+</div>
+
+
+
+
+
+
+
+
+  
+    <h2>
+      Instance Method Summary
+      <small><a href="#" class="summary_toggle">collapse</a></small>
+    </h2>
+
+    <ul class="summary">
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#allow_missing%3F-instance_method" title="#allow_missing? (instance method)">#<strong>allow_missing?</strong>(dependency)  &#x21d2; Boolean </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><p>Returns whether this dependency, which has no possible matching specifications, can safely be ignored.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#dependencies_for-instance_method" title="#dependencies_for (instance method)">#<strong>dependencies_for</strong>(specification)  &#x21d2; Array&lt;Object&gt; </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><p>Returns the dependencies of <code>specification</code>.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#find_puppet_specifications-instance_method" title="#find_puppet_specifications (instance method)">#<strong>find_puppet_specifications</strong>(dependency)  &#x21d2; Object </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#initialize-instance_method" title="#initialize (instance method)">#<strong>initialize</strong>(puppetfile_document, puppet_version, resolver_ui, options = {})  &#x21d2; ResolutionProvider </a>
+    
+
+    
+  </span>
+  
+  
+    <span class="note title constructor">constructor</span>
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><p>options   module_paths : Array of paths   strict_mode  : [Boolean] Whether missing dependencies throw an error (default: false).</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#name_for-instance_method" title="#name_for (instance method)">#<strong>name_for</strong>(dependency)  &#x21d2; String </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><p>Returns the name for the given <code>dependency</code>.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#name_for_explicit_dependency_source-instance_method" title="#name_for_explicit_dependency_source (instance method)">#<strong>name_for_explicit_dependency_source</strong>  &#x21d2; Object </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#name_for_locking_dependency_source-instance_method" title="#name_for_locking_dependency_source (instance method)">#<strong>name_for_locking_dependency_source</strong>  &#x21d2; Object </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#requirement_satisfied_by%3F-instance_method" title="#requirement_satisfied_by? (instance method)">#<strong>requirement_satisfied_by?</strong>(requirement, _activated, spec)  &#x21d2; Boolean </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><p>Determines whether the given <code>requirement</code> is satisfied by the given <code>spec</code>, in the context of the current <code>activated</code> dependency graph.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#search_for-instance_method" title="#search_for (instance method)">#<strong>search_for</strong>(dependency)  &#x21d2; Array&lt;Object&gt; </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><p>Search for the specifications that match the given dependency.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#sort_dependencies-instance_method" title="#sort_dependencies (instance method)">#<strong>sort_dependencies</strong>(dependencies, activated, conflicts)  &#x21d2; Object </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><p>rubocop:disable Lint/UnusedMethodArgument You&#39;re drunk rubocop.</p>
+</div></span>
+  
+</li>
+
+      
+    </ul>
+  
+
+
+  <div id="constructor_details" class="method_details_list">
+  <h2>Constructor Details</h2>
+  
+    <div class="method_details first">
+  <h3 class="signature first" id="initialize-instance_method">
+  
+    #<strong>initialize</strong>(puppetfile_document, puppet_version, resolver_ui, options = {})  &#x21d2; <tt><span class='object_link'><a href="" title="PuppetfileResolver::ResolutionProvider (class)">ResolutionProvider</a></span></tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    <p>options
+  module_paths : Array of paths
+  strict_mode  : [Boolean] Whether missing dependencies throw an error (default: false)</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/puppetfile-resolver/resolution_provider.rb', line 16</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='id identifier rubyid_puppetfile_document'>puppetfile_document</span><span class='comma'>,</span> <span class='id identifier rubyid_puppet_version'>puppet_version</span><span class='comma'>,</span> <span class='id identifier rubyid_resolver_ui'>resolver_ui</span><span class='comma'>,</span> <span class='id identifier rubyid_options'>options</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_require'>require</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>semantic_puppet</span><span class='tstring_end'>&#39;</span></span>
+
+  <span class='ivar'>@puppetfile_document</span> <span class='op'>=</span> <span class='id identifier rubyid_puppetfile_document'>puppetfile_document</span>
+  <span class='id identifier rubyid_raise'>raise</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>The UI object must be of type Molinillo::UI</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>if</span> <span class='id identifier rubyid_resolver_ui'>resolver_ui</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span> <span class='op'>||</span> <span class='op'>!</span><span class='id identifier rubyid_resolver_ui'>resolver_ui</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>Molinillo</span><span class='op'>::</span><span class='const'>UI</span><span class='rparen'>)</span>
+  <span class='ivar'>@resolver_ui</span> <span class='op'>=</span> <span class='id identifier rubyid_resolver_ui'>resolver_ui</span>
+  <span class='comment'># TODO: This default crap should move to the resolve class and we just validate (and raise) here
+</span>  <span class='ivar'>@puppet_module_paths</span> <span class='op'>=</span> <span class='id identifier rubyid_options'>options</span><span class='lbracket'>[</span><span class='symbol'>:module_paths</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span> <span class='op'>?</span> <span class='lbracket'>[</span><span class='rbracket'>]</span> <span class='op'>:</span> <span class='id identifier rubyid_options'>options</span><span class='lbracket'>[</span><span class='symbol'>:module_paths</span><span class='rbracket'>]</span>
+  <span class='ivar'>@allow_missing_modules</span> <span class='op'>=</span> <span class='id identifier rubyid_options'>options</span><span class='lbracket'>[</span><span class='symbol'>:allow_missing_modules</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span> <span class='op'>?</span> <span class='kw'>true</span> <span class='op'>:</span> <span class='id identifier rubyid_options'>options</span><span class='lbracket'>[</span><span class='symbol'>:allow_missing_modules</span><span class='rbracket'>]</span> <span class='op'>==</span> <span class='kw'>true</span>
+  <span class='comment'># There can be only one puppet specification in existance so we pre-load here.
+</span>  <span class='ivar'>@puppet_specification</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="Models.html" title="PuppetfileResolver::Models (module)">Models</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="Models/PuppetSpecification.html" title="PuppetfileResolver::Models::PuppetSpecification (class)">PuppetSpecification</a></span></span><span class='period'>.</span><span class='id identifier rubyid_new'><span class='object_link'><a href="Models/PuppetSpecification.html#initialize-instance_method" title="PuppetfileResolver::Models::PuppetSpecification#initialize (method)">new</a></span></span><span class='lparen'>(</span><span class='id identifier rubyid_puppet_version'>puppet_version</span><span class='rparen'>)</span>
+  <span class='ivar'>@module_info</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span>
+  <span class='ivar'>@cache</span> <span class='op'>=</span> <span class='id identifier rubyid_options'>options</span><span class='lbracket'>[</span><span class='symbol'>:cache</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span> <span class='op'>?</span> <span class='const'><span class='object_link'><a href="Cache.html" title="PuppetfileResolver::Cache (module)">Cache</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="Cache/Base.html" title="PuppetfileResolver::Cache::Base (class)">Base</a></span></span><span class='period'>.</span><span class='id identifier rubyid_new'><span class='object_link'><a href="Cache/Base.html#initialize-instance_method" title="PuppetfileResolver::Cache::Base#initialize (method)">new</a></span></span> <span class='op'>:</span> <span class='id identifier rubyid_options'>options</span><span class='lbracket'>[</span><span class='symbol'>:cache</span><span class='rbracket'>]</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+  
+</div>
+
+
+  <div id="instance_method_details" class="method_details_list">
+    <h2>Instance Method Details</h2>
+
+    
+      <div class="method_details first">
+  <h3 class="signature first" id="allow_missing?-instance_method">
+  
+    #<strong>allow_missing?</strong>(dependency)  &#x21d2; <tt>Boolean</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    <p>Returns whether this dependency, which has no possible matching
+specifications, can safely be ignored.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>dependency</span>
+      
+      
+        <span class='type'>(<tt>Object</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>whether this dependency can safely be skipped.</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+120
+121
+122
+123
+124
+125
+126</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/puppetfile-resolver/resolution_provider.rb', line 120</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_allow_missing?'>allow_missing?</span><span class='lparen'>(</span><span class='id identifier rubyid_dependency'>dependency</span><span class='rparen'>)</span>
+  <span class='comment'># Puppet dependencies must _always_ be resolvable
+</span>  <span class='kw'>return</span> <span class='kw'>false</span> <span class='kw'>if</span> <span class='id identifier rubyid_dependency'>dependency</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'><span class='object_link'><a href="Models.html" title="PuppetfileResolver::Models (module)">Models</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="Models/PuppetDependency.html" title="PuppetfileResolver::Models::PuppetDependency (class)">PuppetDependency</a></span></span><span class='rparen'>)</span>
+  <span class='comment'># Explicit Puppetfile dependencies must _always_ be resolvable
+</span>  <span class='kw'>return</span> <span class='kw'>false</span> <span class='kw'>if</span> <span class='id identifier rubyid_dependency'>dependency</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'><span class='object_link'><a href="Models.html" title="PuppetfileResolver::Models (module)">Models</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="Models/PuppetfileDependency.html" title="PuppetfileResolver::Models::PuppetfileDependency (class)">PuppetfileDependency</a></span></span><span class='rparen'>)</span>
+  <span class='ivar'>@allow_missing_modules</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="dependencies_for-instance_method">
+  
+    #<strong>dependencies_for</strong>(specification)  &#x21d2; <tt>Array&lt;Object&gt;</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+  <div class="note notetag">
+    <strong>Note:</strong>
+    <div class='inline'><p>This method should be &#39;pure&#39;, i.e. the return value should depend
+only on the <code>specification</code> parameter.</p>
+</div>
+  </div>
+
+<p>Returns the dependencies of <code>specification</code>.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>specification</span>
+      
+      
+        <span class='type'>(<tt>Object</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Array&lt;Object&gt;</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>the dependencies that are required by the given
+<code>specification</code>.</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+70
+71
+72</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/puppetfile-resolver/resolution_provider.rb', line 70</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_dependencies_for'>dependencies_for</span><span class='lparen'>(</span><span class='id identifier rubyid_specification'>specification</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_specification'>specification</span><span class='period'>.</span><span class='id identifier rubyid_dependencies'>dependencies</span><span class='lparen'>(</span><span class='ivar'>@cache</span><span class='comma'>,</span> <span class='ivar'>@resolver_ui</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="find_puppet_specifications-instance_method">
+  
+    #<strong>find_puppet_specifications</strong>(dependency)  &#x21d2; <tt>Object</tt> 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+58
+59
+60
+61</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/puppetfile-resolver/resolution_provider.rb', line 58</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_find_puppet_specifications'>find_puppet_specifications</span><span class='lparen'>(</span><span class='id identifier rubyid_dependency'>dependency</span><span class='rparen'>)</span>
+  <span class='comment'># Puppet specifications are a bit special as there can be only one (Highlander style)
+</span>  <span class='id identifier rubyid_dependency'>dependency</span><span class='period'>.</span><span class='id identifier rubyid_satisified_by?'>satisified_by?</span><span class='lparen'>(</span><span class='ivar'>@puppet_specification</span><span class='rparen'>)</span> <span class='op'>?</span> <span class='lbracket'>[</span><span class='ivar'>@puppet_specification</span><span class='rbracket'>]</span> <span class='op'>:</span> <span class='lbracket'>[</span><span class='rbracket'>]</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="name_for-instance_method">
+  
+    #<strong>name_for</strong>(dependency)  &#x21d2; <tt>String</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+  <div class="note notetag">
+    <strong>Note:</strong>
+    <div class='inline'><p>This method should be &#39;pure&#39;, i.e. the return value should depend
+only on the <code>dependency</code> parameter.</p>
+</div>
+  </div>
+
+<p>Returns the name for the given <code>dependency</code>.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>dependency</span>
+      
+      
+        <span class='type'>(<tt>Object</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>the name for the given <code>dependency</code>.</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+80
+81
+82</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/puppetfile-resolver/resolution_provider.rb', line 80</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_name_for'>name_for</span><span class='lparen'>(</span><span class='id identifier rubyid_dependency'>dependency</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_dependency'>dependency</span><span class='period'>.</span><span class='id identifier rubyid_name'>name</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="name_for_explicit_dependency_source-instance_method">
+  
+    #<strong>name_for_explicit_dependency_source</strong>  &#x21d2; <tt>Object</tt> 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+97
+98
+99</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/puppetfile-resolver/resolution_provider.rb', line 97</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_name_for_explicit_dependency_source'>name_for_explicit_dependency_source</span>
+  <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>Puppetfile</span><span class='tstring_end'>&#39;</span></span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="name_for_locking_dependency_source-instance_method">
+  
+    #<strong>name_for_locking_dependency_source</strong>  &#x21d2; <tt>Object</tt> 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+101
+102
+103</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/puppetfile-resolver/resolution_provider.rb', line 101</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_name_for_locking_dependency_source'>name_for_locking_dependency_source</span>
+  <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>Puppetfile</span><span class='tstring_end'>&#39;</span></span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="requirement_satisfied_by?-instance_method">
+  
+    #<strong>requirement_satisfied_by?</strong>(requirement, _activated, spec)  &#x21d2; <tt>Boolean</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    <p>Determines whether the given <code>requirement</code> is satisfied by the given
+<code>spec</code>, in the context of the current <code>activated</code> dependency graph.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>requirement</span>
+      
+      
+        <span class='type'>(<tt>Object</tt>)</span>
+      
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>activated</span>
+      
+      
+        <span class='type'>(<tt>DependencyGraph</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>the current dependency graph in the
+resolution process.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>spec</span>
+      
+      
+        <span class='type'>(<tt>Object</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>whether <code>requirement</code> is satisfied by <code>spec</code> in the
+context of the current <code>activated</code> dependency graph.</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+93
+94
+95</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/puppetfile-resolver/resolution_provider.rb', line 93</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_requirement_satisfied_by?'>requirement_satisfied_by?</span><span class='lparen'>(</span><span class='id identifier rubyid_requirement'>requirement</span><span class='comma'>,</span> <span class='id identifier rubyid__activated'>_activated</span><span class='comma'>,</span> <span class='id identifier rubyid_spec'>spec</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_requirement'>requirement</span><span class='period'>.</span><span class='id identifier rubyid_satisified_by?'>satisified_by?</span><span class='lparen'>(</span><span class='id identifier rubyid_spec'>spec</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="search_for-instance_method">
+  
+    #<strong>search_for</strong>(dependency)  &#x21d2; <tt>Array&lt;Object&gt;</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+  <div class="note notetag">
+    <strong>Note:</strong>
+    <div class='inline'><p>This method should be &#39;pure&#39;, i.e. the return value should depend
+only on the <code>dependency</code> parameter.</p>
+</div>
+  </div>
+
+<p>Search for the specifications that match the given dependency.
+The specifications in the returned array will be considered in reverse
+order, so the latest version ought to be last.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>dependency</span>
+      
+      
+        <span class='type'>(<tt>Object</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Array&lt;Object&gt;</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>the specifications that satisfy the given
+<code>dependency</code>.</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/puppetfile-resolver/resolution_provider.rb', line 40</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_search_for'>search_for</span><span class='lparen'>(</span><span class='id identifier rubyid_dependency'>dependency</span><span class='rparen'>)</span>
+  <span class='kw'>case</span> <span class='id identifier rubyid_dependency'>dependency</span>
+  <span class='kw'>when</span> <span class='const'><span class='object_link'><a href="Models.html" title="PuppetfileResolver::Models (module)">Models</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="Models/PuppetDependency.html" title="PuppetfileResolver::Models::PuppetDependency (class)">PuppetDependency</a></span></span>
+    <span class='id identifier rubyid_result'>result</span> <span class='op'>=</span> <span class='id identifier rubyid_find_puppet_specifications'>find_puppet_specifications</span><span class='lparen'>(</span><span class='id identifier rubyid_dependency'>dependency</span><span class='rparen'>)</span>
+  <span class='kw'>when</span> <span class='const'><span class='object_link'><a href="Models.html" title="PuppetfileResolver::Models (module)">Models</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="Models/ModuleDependency.html" title="PuppetfileResolver::Models::ModuleDependency (class)">ModuleDependency</a></span></span>
+    <span class='id identifier rubyid_result'>result</span> <span class='op'>=</span> <span class='id identifier rubyid_find_all_module_specifications'>find_all_module_specifications</span><span class='lparen'>(</span><span class='id identifier rubyid_dependency'>dependency</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_select'>select</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_spec'>spec</span><span class='op'>|</span>
+      <span class='id identifier rubyid_dependency'>dependency</span><span class='period'>.</span><span class='id identifier rubyid_satisified_by?'>satisified_by?</span><span class='lparen'>(</span><span class='id identifier rubyid_spec'>spec</span><span class='rparen'>)</span>
+    <span class='kw'>end</span>
+  <span class='kw'>else</span>
+    <span class='comment'># No idea how we got here?!?!
+</span>    <span class='id identifier rubyid_raise'>raise</span> <span class='const'>ArgumentError</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Unknown Dependency type </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_dependency'>dependency</span><span class='period'>.</span><span class='id identifier rubyid_class'>class</span><span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span>
+  <span class='kw'>end</span>
+
+  <span class='kw'>return</span> <span class='id identifier rubyid_result'>result</span> <span class='kw'>if</span> <span class='id identifier rubyid_result'>result</span><span class='period'>.</span><span class='id identifier rubyid_empty?'>empty?</span> <span class='op'>||</span> <span class='id identifier rubyid_result'>result</span><span class='period'>.</span><span class='id identifier rubyid_count'>count</span> <span class='op'>==</span> <span class='int'>1</span>
+  <span class='comment'># Reverse sort by version
+</span>  <span class='id identifier rubyid_result'>result</span><span class='period'>.</span><span class='id identifier rubyid_sort!'>sort!</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_a'>a</span><span class='comma'>,</span> <span class='id identifier rubyid_b'>b</span><span class='op'>|</span> <span class='id identifier rubyid_a'>a</span><span class='period'>.</span><span class='id identifier rubyid_version'>version</span> <span class='op'>&gt;</span> <span class='id identifier rubyid_b'>b</span><span class='period'>.</span><span class='id identifier rubyid_version'>version</span> <span class='op'>?</span> <span class='int'>1</span> <span class='op'>:</span> <span class='op'>-</span><span class='int'>1</span> <span class='rbrace'>}</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="sort_dependencies-instance_method">
+  
+    #<strong>sort_dependencies</strong>(dependencies, activated, conflicts)  &#x21d2; <tt>Object</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    <p>rubocop:disable Lint/UnusedMethodArgument You&#39;re drunk rubocop</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+105
+106
+107
+108
+109
+110
+111
+112
+113</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/puppetfile-resolver/resolution_provider.rb', line 105</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_sort_dependencies'>sort_dependencies</span><span class='lparen'>(</span><span class='id identifier rubyid_dependencies'>dependencies</span><span class='comma'>,</span> <span class='id identifier rubyid_activated'>activated</span><span class='comma'>,</span> <span class='id identifier rubyid_conflicts'>conflicts</span><span class='rparen'>)</span> <span class='comment'># rubocop:disable Lint/UnusedMethodArgument You&#39;re drunk rubocop
+</span>  <span class='id identifier rubyid_dependencies'>dependencies</span><span class='period'>.</span><span class='id identifier rubyid_sort_by'>sort_by</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_dependency'>dependency</span><span class='op'>|</span>
+    <span class='id identifier rubyid_name'>name</span> <span class='op'>=</span> <span class='id identifier rubyid_name_for'>name_for</span><span class='lparen'>(</span><span class='id identifier rubyid_dependency'>dependency</span><span class='rparen'>)</span>
+    <span class='lbracket'>[</span>
+      <span class='id identifier rubyid_activated'>activated</span><span class='period'>.</span><span class='id identifier rubyid_vertex_named'>vertex_named</span><span class='lparen'>(</span><span class='id identifier rubyid_name'>name</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_payload'>payload</span> <span class='op'>?</span> <span class='int'>0</span> <span class='op'>:</span> <span class='int'>1</span><span class='comma'>,</span>
+      <span class='id identifier rubyid_conflicts'>conflicts</span><span class='lbracket'>[</span><span class='id identifier rubyid_name'>name</span><span class='rbracket'>]</span> <span class='op'>?</span> <span class='int'>0</span> <span class='op'>:</span> <span class='int'>1</span>
+    <span class='rbracket'>]</span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+  </div>
+
+</div>
+
+      <div id="footer">
+  Generated on Mon Mar  9 16:30:30 2020 by
+  <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
+  0.9.24 (ruby-2.5.1).
+</div>
+
+    </div>
+  </body>
+</html>
