@@ -58,6 +58,10 @@ describe PuppetfileResolver::Resolver do
       it 'should resolve with error' do
         expect{ subject.resolve(resolve_options) }.to raise_error(RuntimeError, /is not valid/)
       end
+
+      it 'should fail' do
+        expect(1).to eq(2)
+      end
     end
 
     context "Given a document with no modules" do
