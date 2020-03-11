@@ -351,6 +351,7 @@ RSpec.shared_examples "a puppetfile parser with magic comments" do
 
       mod 'puppetlabs-magic1', :latest # resolver:disable Dependency/Puppet
       mod 'puppetlabs-magic2', :latest # resolver:disable Dependency/all
+      mod 'puppetlabs-magic3', :latest # resolver:disable Validation/LatestVersion
       EOT
     end
     let(:puppetfile) { subject.parse(puppetfile_content) }
@@ -363,6 +364,11 @@ RSpec.shared_examples "a puppetfile parser with magic comments" do
     it 'should add the DISABLE_ALL_DEPENDENCIES_FLAG flag for Dependency/All' do
       mod = get_module(puppetfile, 'puppetlabs-magic2')
       expect(mod.resolver_flags).to eq([PuppetfileResolver::Puppetfile::DISABLE_ALL_DEPENDENCIES_FLAG])
+    end
+
+    it 'should add the DISABLE_LATEST_VALIDATION_FLAG flag for Validation/LatestVersion' do
+      mod = get_module(puppetfile, 'puppetlabs-magic3')
+      expect(mod.resolver_flags).to eq([PuppetfileResolver::Puppetfile::DISABLE_LATEST_VALIDATION_FLAG])
     end
   end
 end

@@ -57,3 +57,4 @@ The available settings are:
 | --------------------| ----------- |
 | `Dependency/Puppet` | Instructs the resolver to ignore any Puppet version in its dependency traversal for the specified modules. Useful for modules with outdated metadata.json information |
 | `Dependency/All`    | Instructs the resolver to ignore any, and all, dependencies in its dependency traversal of the specified module. Useful for modules with outdated metadata.json information. |
+| `Validation/LatestVersion` | Instructs the resolution validator to ignore modules that have a version of :latest |

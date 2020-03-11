@@ -126,6 +126,7 @@ describe 'PuppetfileResolver::Puppetfile::Document' do
       @document_modules = document_fixtures.map do |doc_mod|
         mod = doc_mod[:class].new(doc_mod[:name])
         mod.version = doc_mod[:version]
+        mod.resolver_flags = doc_mod[:flags] unless doc_mod[:flags].nil?
         subject.add_module(mod)
         mod
       end
@@ -206,6 +207,19 @@ describe 'PuppetfileResolver::Puppetfile::Document' do
           module_specification: @module_specifications['foo'],
           puppet_module: @document_modules[0]
         )
+      end
+
+      context 'and using the DISABLE_LATEST_VALIDATION_FLAG flag' do
+        let(:document_fixtures) do
+          [
+            { class: PuppetfileResolver::Puppetfile::ForgeModule, name: 'foo', version: :latest, flags: [PuppetfileResolver::Puppetfile::DISABLE_LATEST_VALIDATION_FLAG] }
+          ]
+        end
+
+        it 'should not return a DocumentLatestVersionError' do
+          errors = subject.resolution_validation_errors(resolution_result)
+          expect(errors.count).to eq(0)
+        end
       end
     end
 
