@@ -105,6 +105,8 @@ module PuppetfileResolver
               PuppetfileResolver::Puppetfile::DISABLE_PUPPET_DEPENDENCY_FLAG
             when 'dependency/all'
               PuppetfileResolver::Puppetfile::DISABLE_ALL_DEPENDENCIES_FLAG
+            when 'validation/latestversion'
+              PuppetfileResolver::Puppetfile::DISABLE_LATEST_VALIDATION_FLAG
             else # rubocop:disable Style/EmptyElse We will be adding something here later
               # TODO: Should we log a warning/info here?
               nil
