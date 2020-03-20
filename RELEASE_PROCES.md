@@ -42,5 +42,6 @@
 7. Upload the artefacts to ruby gems
 
     ``` text
-    > git push puppetfile-resolver-0.11.0.gem
+    > gem signin
+    > gem push puppetfile-resolver-0.11.0.gem
     ```
