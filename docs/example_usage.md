@@ -14,6 +14,7 @@ puppetfile_path = '/path/to/Puppetfile'
 
 # Parse the Puppetfile into an object model
 content = File.open(puppetfile_path, 'rb') { |f| f.read }
+require 'puppetfile-resolver'
 require 'puppetfile-resolver/puppetfile/parser/r10k_eval'
 puppetfile = ::PuppetfileResolver::Puppetfile::Parser::R10KEval.parse(content)
 
