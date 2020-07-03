@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'puppetfile-resolver/puppetfile/document'
+
 module PuppetfileResolver
   module Puppetfile
     FORGE_MODULE   = :forge
