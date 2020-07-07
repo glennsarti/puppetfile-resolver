@@ -282,6 +282,70 @@ describe PuppetfileResolver::Resolver do
       end
     end
 
+    context "Given a document with resolvable but legacy module definition" do
+      let(:puppetfile_module) { PuppetfileResolver::Puppetfile::LocalModule.new('module1') }
+      let(:puppetfile_document) do
+        doc = valid_document('foo')
+        doc.add_module(puppetfile_module)
+        doc
+      end
+
+      before(:each) do
+        # Module 1 depends on Module 2
+        cache.add_local_module_spec(
+          'module1',
+          [{ name: 'module2', version_range: '> 1.0.0 < 2.0.0' }]
+        )
+        cache.add_local_module_spec('module2', [], nil, '2.0.0')
+        cache.add_local_module_spec('module2', [], nil, '1.5.0')
+      end
+
+      [true, false].each do |testcase|
+        context "and Allow Missing Modules option is #{testcase}" do
+          let(:resolve_options) { default_resolve_options.merge(allow_missing_modules: testcase) }
+
+          it 'should resolve with the most appropriate specification' do
+            result = subject.resolve(resolve_options)
+
+            expect(result.specifications).to include('module2')
+            expect(result.specifications['module2'].version.to_s).to eq('1.5.0')
+          end
+        end
+      end
+    end
+
+    context "Given a document with resolvable but partial module definition" do
+      let(:puppetfile_module) { PuppetfileResolver::Puppetfile::LocalModule.new('module1') }
+      let(:puppetfile_document) do
+        doc = valid_document('foo')
+        doc.add_module(puppetfile_module)
+        doc
+      end
+
+      before(:each) do
+        # Module 1 depends on Module 2
+        cache.add_local_module_spec(
+          'module1',
+          [{ name: 'module2' }]
+        )
+        cache.add_local_module_spec('module2', [], nil, '2.0.0')
+        cache.add_local_module_spec('module2', [], nil, '1.5.0')
+      end
+
+      [true, false].each do |testcase|
+        context "and Allow Missing Modules option is #{testcase}" do
+          let(:resolve_options) { default_resolve_options.merge(allow_missing_modules: testcase) }
+
+          it 'should resolve with the most appropriate specification' do
+            result = subject.resolve(resolve_options)
+
+            expect(result.specifications).to include('module2')
+            expect(result.specifications['module2'].version.to_s).to eq('2.0.0')
+          end
+        end
+      end
+    end
+
     context "Given a document with a unresolvable Puppet requirement" do
       let(:puppet_version) { '99.99.99' }
       let(:puppetfile_module) { PuppetfileResolver::Puppetfile::LocalModule.new('module1') }

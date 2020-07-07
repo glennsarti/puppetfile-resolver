@@ -90,7 +90,7 @@ module PuppetfileResolver
           @dependencies = meta[:dependencies].map do |dep|
             ModuleDependency.new(
               name: dep[:name],
-              version_requirement: dep[:version_requirement]
+              version_requirement: dep[:version_requirement] || dep[:version_range] || '>= 0.0.0'
             )
           end
         end
