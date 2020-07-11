@@ -6,6 +6,13 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## Unreleased
 
+## 0.3.0 - 2020-07-11
+
+### Fixed
+
+- ([GH-7](https://github.com/glennsarti/puppetfile-resolver/issues/7)) Sample usage file doesn't work
+- ([GH-10](https://github.com/glennsarti/puppetfile-resolver/issues/10)) Fix for legacy style metadata.json dependencies
+
 ## 0.2.0 - 2020-03-20
 
 ### Added
