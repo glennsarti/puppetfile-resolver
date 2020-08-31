@@ -55,7 +55,7 @@ module PuppetfileResolver
         if mod.version.nil? || mod.version == :latest
           version = '>= 0' # Note the `>=` is important. Don't use `>`
         else
-          version = "=#{mod.version}"
+          version = mod.version
         end
 
         result << Models::PuppetfileDependency.new(

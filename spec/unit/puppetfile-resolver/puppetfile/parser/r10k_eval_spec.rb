@@ -62,7 +62,7 @@ RSpec.shared_examples "a puppetfile parser with valid content" do
       expect(mod.title).to eq('puppetlabs-forge_fixed_ver')
       expect(mod.owner).to eq('puppetlabs')
       expect(mod.name).to eq('forge_fixed_ver')
-      expect(mod.version).to eq('1.0.0')
+      expect(mod.version).to eq('=1.0.0')
       expect(mod.location.start_line).to eq(2)
       expect(mod.location.start_char).to be_nil
       expect(mod.location.end_line).to eq(2)

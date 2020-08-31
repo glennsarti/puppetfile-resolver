@@ -14,7 +14,15 @@ module PuppetfileResolver
 
             def self.to_document_module(title, args)
               mod = ::PuppetfileResolver::Puppetfile::ForgeModule.new(title)
-              mod.version = args if valid_version?(args)
+
+              if valid_version?(args)
+                if args == :latest
+                  mod.version = args
+                else
+                  mod.version = "=#{args}"
+                end
+              end
+
               mod
             end
 
