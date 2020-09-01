@@ -4,7 +4,7 @@ require 'molinillo'
 
 module PuppetfileResolver
   class ResolutionResult
-    attr_reader :dependency_graph
+    attr_reader :dependency_graph, :puppetfile_document
 
     def initialize(dependency_graph, puppetfile_document)
       raise "Expected Molinillo::DependencyGraph but got #{dependency_graph.class}" unless dependency_graph.is_a?(Molinillo::DependencyGraph)
