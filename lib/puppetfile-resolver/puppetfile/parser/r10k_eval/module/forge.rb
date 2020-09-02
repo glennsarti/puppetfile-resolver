@@ -19,7 +19,7 @@ module PuppetfileResolver
             end
 
             def self.valid_version?(value)
-              return false unless value.is_a?(String) || value.is_a?(Symbol)
+              return false unless value.is_a?(String) || value.is_a?(Symbol) || value.nil?
               value == :latest || value.nil? || valid_version_string?(value)
             end
             private_class_method :valid_version?
