@@ -29,6 +29,8 @@ RSpec.shared_examples "a puppetfile parser with valid content" do
     mod 'local', :local => 'some/path'
 
     mod 'svn_min', :svn => 'some-svn-repo'
+
+    mod 'puppetlabs-forge_missing'
     EOT
   end
 
@@ -47,7 +49,7 @@ RSpec.shared_examples "a puppetfile parser with valid content" do
   end
 
   it "should detect all of the modules" do
-    expect(puppetfile.modules.count).to eq(8)
+    expect(puppetfile.modules.count).to eq(9)
   end
 
   it "should not set any resolver flags" do
@@ -80,6 +82,20 @@ RSpec.shared_examples "a puppetfile parser with valid content" do
       expect(mod.location.start_line).to eq(3)
       expect(mod.location.start_char).to be_nil
       expect(mod.location.end_line).to eq(3)
+      expect(mod.location.end_char).to  be_nil
+    end
+
+    it 'should detect missing latest version modules as latest' do
+      mod = get_module(puppetfile, 'puppetlabs-forge_missing')
+
+      expect(mod.module_type).to eq(PuppetfileResolver::Puppetfile::FORGE_MODULE)
+      expect(mod.title).to eq('puppetlabs-forge_missing')
+      expect(mod.owner).to eq('puppetlabs')
+      expect(mod.name).to eq('forge_missing')
+      expect(mod.version).to eq(:latest)
+      expect(mod.location.start_line).to eq(25)
+      expect(mod.location.start_char).to be_nil
+      expect(mod.location.end_line).to eq(25)
       expect(mod.location.end_char).to  be_nil
     end
   end
@@ -379,7 +395,6 @@ RSpec.shared_examples "a puppetfile parser with invalid content" do
     forge 'https://fake-forge.puppetlabs.com/'
 
     mod 'puppetlabs-bad_version', 'b.c.d'
-    mod 'puppetlabs-missing_version'
 
     mod 'bad_args',
       :gitx => 'git@github.com:puppetlabs/puppetlabs-git_ref.git'
@@ -393,7 +408,7 @@ RSpec.shared_examples "a puppetfile parser with invalid content" do
   end
 
   it "should detect all of the invalid modules" do
-    expect(puppetfile.modules.count).to eq(3)
+    expect(puppetfile.modules.count).to eq(2)
 
     puppetfile.modules.each do |mod|
       expect(mod).to have_attributes(:module_type => PuppetfileResolver::Puppetfile::INVALID_MODULE)
