@@ -322,7 +322,7 @@ From Semantic Puppet gem</p>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_to_document_module'>to_document_module</span><span class='lparen'>(</span><span class='id identifier rubyid_title'>title</span><span class='comma'>,</span> <span class='id identifier rubyid_args'>args</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_mod'>mod</span> <span class='op'>=</span> <span class='op'>::</span><span class='const'><span class='object_link'><a href="../../../../../PuppetfileResolver.html" title="PuppetfileResolver (module)">PuppetfileResolver</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="../../../../Puppetfile.html" title="PuppetfileResolver::Puppetfile (module)">Puppetfile</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="../../../ForgeModule.html" title="PuppetfileResolver::Puppetfile::ForgeModule (class)">ForgeModule</a></span></span><span class='period'>.</span><span class='id identifier rubyid_new'><span class='object_link'><a href="../../../ForgeModule.html#initialize-instance_method" title="PuppetfileResolver::Puppetfile::ForgeModule#initialize (method)">new</a></span></span><span class='lparen'>(</span><span class='id identifier rubyid_title'>title</span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_mod'>mod</span><span class='period'>.</span><span class='id identifier rubyid_version'>version</span> <span class='op'>=</span> <span class='id identifier rubyid_args'>args</span> <span class='kw'>if</span> <span class='id identifier rubyid_valid_version?'>valid_version?</span><span class='lparen'>(</span><span class='id identifier rubyid_args'>args</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_mod'>mod</span><span class='period'>.</span><span class='id identifier rubyid_version'>version</span> <span class='op'>=</span> <span class='id identifier rubyid_munge_version_string'>munge_version_string</span><span class='lparen'>(</span><span class='id identifier rubyid_args'>args</span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='id identifier rubyid_valid_version?'>valid_version?</span><span class='lparen'>(</span><span class='id identifier rubyid_args'>args</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_mod'>mod</span>
 <span class='kw'>end</span></pre>
     </td>
@@ -335,7 +335,7 @@ From Semantic Puppet gem</p>
 </div>
 
       <div id="footer">
-  Generated on Sat Jul 11 19:46:22 2020 by
+  Generated on Wed Sep  9 20:20:16 2020 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.25 (ruby-2.5.1).
 </div>
