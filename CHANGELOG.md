@@ -6,6 +6,17 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## Unreleased
 
+## 0.4.0 - 2020-09-09
+
+### Fixed
+
+- ([GH-15](https://github.com/glennsarti/puppetfile-resolver/pull/15)) Accept forge module specifications without versions as valid ([beechtom](https://github.com/beechtom))
+- ([GH-16](https://github.com/glennsarti/puppetfile-resolver/pull/16)) Support version ranges when resolving dependencies ([beechtom](https://github.com/beechtom))
+
+### Added
+
+- ([GH-14](https://github.com/glennsarti/puppetfile-resolver/pull/14)) Read Puppetfile document model from resolution result ([beechtom](https://github.com/beechtom))
+
 ## 0.3.0 - 2020-07-11
 
 ### Fixed
