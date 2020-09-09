@@ -245,6 +245,49 @@ describe PuppetfileResolver::Resolver do
       end
     end
 
+    context "Given a document with resolvable version range dependencies" do
+      [
+        { range: '> 1.0.0 < 3.0.0', expected_version: '2.0.0' },
+        { range: '< 2.5.0',         expected_version: '2.0.0' },
+        { range: '<= 2.0.0',        expected_version: '2.0.0' },
+        { range: '>= 2.0.0',        expected_version: '3.0.0' },
+        { range: '= 1.0.0',         expected_version: '1.0.0' },
+        { range: :latest,           expected_version: '3.0.0' },
+        { range: nil,               expected_version: '3.0.0' }
+      ].each do |range_testcase|
+        describe "With a range of '#{range_testcase[:range]}'" do
+          let(:puppetfile_document) do
+            doc = valid_document('foo')
+            doc.add_module(PuppetfileResolver::Puppetfile::LocalModule.new('module1').tap { |o| o.version = range_testcase[:range] })
+            doc
+          end
+
+          before(:each) do
+            cache.add_local_module_spec('module1', [], nil, '1.0.0')
+            cache.add_local_module_spec('module1', [], nil, '2.0.0')
+            cache.add_local_module_spec('module1', [], nil, '3.0.0')
+          end
+
+          [true, false].each do |testcase|
+            context "and Allow Missing Modules option is #{testcase}" do
+              let(:resolve_options) { default_resolve_options.merge(allow_missing_modules: testcase) }
+
+              it 'should resolve without error' do
+                expect{ subject.resolve(resolve_options) }.to_not raise_error
+              end
+
+              it 'should resolve with found module specifications' do
+                result = subject.resolve(resolve_options)
+
+                expect(result.specifications).to include('module1')
+                expect(result.specifications['module1'].version.to_s).to eq(range_testcase[:expected_version])
+              end
+            end
+          end
+        end
+      end
+    end
+
     context "Given a document with a resolvable Puppet requirement" do
       let(:puppet_version) { '3.0.0' }
       let(:puppetfile_document) do

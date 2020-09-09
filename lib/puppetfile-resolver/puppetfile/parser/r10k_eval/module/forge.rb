@@ -14,7 +14,7 @@ module PuppetfileResolver
 
             def self.to_document_module(title, args)
               mod = ::PuppetfileResolver::Puppetfile::ForgeModule.new(title)
-              mod.version = args || :latest if valid_version?(args)
+              mod.version = munge_version_string(args) if valid_version?(args)
               mod
             end
 
@@ -42,6 +42,12 @@ module PuppetfileResolver
               end
             end
             private_class_method :valid_version_string?
+
+            def self.munge_version_string(value)
+              return :latest if value.nil? || value == :latest
+              "=#{value}"
+            end
+            private_class_method :munge_version_string
           end
         end
       end
