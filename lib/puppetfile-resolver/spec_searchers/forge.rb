@@ -44,19 +44,17 @@ module PuppetfileResolver
         loops = 0
         loop do
           resolver_ui.debug { "Querying the forge for a module with #{uri}" }
-
-          http_options = { :use_ssl => uri.class == URI::HTTPS }
-          # Because on Windows Ruby doesn't use the Windows certificate store which has up-to date
-          # CA certs, we can't depend on someone setting the environment variable correctly. So use our
-          # static CA PEM file if SSL_CERT_FILE is not set.
-          http_options[:ca_file] = PuppetfileResolver::Util.static_ca_cert_file if ENV['SSL_CERT_FILE'].nil?
-
+          err_msg = "Unable to find module #{owner}-#{name} on #{config.forge_api}"
+          err_msg += config.proxy ? " with proxy #{config.proxy}: " : ': '
           response = nil
-          Net::HTTP.start(uri.host, uri.port, http_options) do |http|
-            request = Net::HTTP::Get.new uri
-            response = http.request request
+
+          begin
+            response = ::PuppetfileResolver::Util.net_http_get(uri, config.proxy)
+          rescue ::StandardError => e
+            raise err_msg + e.message
           end
-          raise "Expected HTTP Code 200, but received #{response.code} for URI #{uri}: #{response.inspect}" unless response.code == '200'
+
+          raise err_msg + "Expected HTTP Code 200, but received #{response.code}" unless response.code == '200'
 
           reply = ::JSON.parse(response.body)
           yield reply['results']
@@ -66,7 +64,7 @@ module PuppetfileResolver
 
           # Circuit breaker in case the worst happens (max 1000 module releases)
           loops += 1
-          raise "Too many Forge API requests #{loops * 50}" if loops > 20
+          raise err_msg + "Too many Forge API requests #{loops}" if loops > 20
         end
       end
       private_class_method :fetch_all_module_releases

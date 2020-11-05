@@ -10,6 +10,8 @@ module PuppetfileResolver
       end
 
       attr_writer :forge_api
+
+      attr_accessor :proxy
     end
   end
 end
