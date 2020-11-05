@@ -21,6 +21,9 @@ module PuppetfileResolver
     # options
     #   :cache => Cache Object
     #   :module_paths => Array[String]
+    #   :forge_api_url => String
+    #   :forge_proxy => String
+    #   :proxy => String
     def resolve(options = {})
       if options[:ui]
         raise 'The UI object must be of type Molinillo::UI' unless options[:ui].is_a?(Molinillo::UI)

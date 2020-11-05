@@ -1,11 +1,12 @@
 # frozen_string_literal: true
 
+require 'puppetfile-resolver/util'
 require 'puppetfile-resolver/spec_searchers/common'
 
 module PuppetfileResolver
   module SpecSearchers
     module Git
-      def self.find_all(puppetfile_module, dependency, cache, resolver_ui)
+      def self.find_all(puppetfile_module, dependency, cache, proxy, resolver_ui)
         dep_id = ::PuppetfileResolver::SpecSearchers::Common.dependency_cache_id(self, dependency)
         # Has the information been cached?
         return cache.load(dep_id) if cache.exist?(dep_id)
@@ -39,8 +40,20 @@ module PuppetfileResolver
         require 'net/http'
         require 'uri'
 
-        resolver_ui.debug { "Querying the Github with #{metadata_url}" }
-        response = Net::HTTP.get_response(URI.parse(metadata_url))
+        resolver_ui.debug { "Querying GitHub with #{metadata_url}" }
+        response = nil
+
+        begin
+          ::PuppetfileResolver::Util.with_proxy_envvars(proxy) do
+            response = Net::HTTP.get_response(URI.parse(metadata_url))
+          end
+        rescue SocketError => e
+          msg = "Unable to find module at #{puppetfile_module.remote}"
+          msg += proxy ? " with proxy #{proxy}: " : ": "
+          msg += e.message
+          raise msg
+        end
+
         if response.code != '200'
           cache.save(dep_id, [])
           return []

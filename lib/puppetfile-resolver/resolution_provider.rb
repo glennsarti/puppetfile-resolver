@@ -26,6 +26,10 @@ module PuppetfileResolver
       @puppet_specification = Models::PuppetSpecification.new(puppet_version)
       @module_info = {}
       @cache = options[:cache].nil? ? Cache::Base.new : options[:cache]
+      @proxy = options[:proxy]
+      @forge_api_url = options[:forge_api_url]
+      # Use the general proxy unless a Forge-specific proxy is given
+      @forge_proxy = options[:forge_proxy] || options[:proxy]
     end
 
     # Search for the specifications that match the given dependency.
@@ -137,9 +141,13 @@ module PuppetfileResolver
       unless mod.nil?
         case mod.module_type
         when Puppetfile::FORGE_MODULE
-          @module_info[dependency.name] = safe_spec_search(dependency) { SpecSearchers::Forge.find_all(dependency, @cache, @resolver_ui) }
+          @module_info[dependency.name] = safe_spec_search(dependency) do
+            SpecSearchers::Forge.find_all(dependency, @cache, @forge_api_url, @forge_proxy, @resolver_ui)
+          end
         when Puppetfile::GIT_MODULE
-          @module_info[dependency.name] = safe_spec_search(dependency) { SpecSearchers::Git.find_all(mod, dependency, @cache, @resolver_ui) }
+          @module_info[dependency.name] = safe_spec_search(dependency) do
+            SpecSearchers::Git.find_all(mod, dependency, @cache, @proxy, @resolver_ui)
+          end
         else # rubocop:disable Style/EmptyElse
           # Errr.... Nothing
         end
@@ -147,13 +155,17 @@ module PuppetfileResolver
       return @module_info[dependency.name] unless @module_info[dependency.name].empty?
 
       # It's not in the Puppetfile, so perhaps it's in our modulepath?
-      @module_info[dependency.name] = safe_spec_search(dependency) { SpecSearchers::Local.find_all(mod, @puppet_module_paths, dependency, @cache, @resolver_ui) }
+      @module_info[dependency.name] = safe_spec_search(dependency) do
+        SpecSearchers::Local.find_all(mod, @puppet_module_paths, dependency, @cache, @resolver_ui)
+      end
       return @module_info[dependency.name] unless @module_info[dependency.name].empty?
 
       # It's not in the Puppetfile and not on disk, so perhaps it's on the Forge?
       # The forge needs an owner and name to be able to resolve
       if dependency.name && dependency.owner # rubocop:disable Style/IfUnlessModifier
-        @module_info[dependency.name] = safe_spec_search(dependency) { SpecSearchers::Forge.find_all(dependency, @cache, @resolver_ui) }
+        @module_info[dependency.name] = safe_spec_search(dependency) do
+          SpecSearchers::Forge.find_all(dependency, @cache, @forge_api_url, @forge_proxy, @resolver_ui)
+        end
       end
 
       # If we can't find any specifications for the module and we're allowing missing modules

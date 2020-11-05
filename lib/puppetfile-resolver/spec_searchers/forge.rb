@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require 'puppetfile-resolver/util'
 require 'puppetfile-resolver/spec_searchers/common'
 require 'uri'
 require 'net/http'
@@ -11,15 +12,17 @@ module PuppetfileResolver
     module Forge
       DEFAULT_FORGE_URI ||= 'https://forgeapi.puppet.com'
 
-      def self.find_all(dependency, cache, resolver_ui)
+      def self.find_all(dependency, cache, forge_api_url, forge_proxy, resolver_ui)
         dep_id = ::PuppetfileResolver::SpecSearchers::Common.dependency_cache_id(self, dependency)
 
         # Has the information been cached?
         return cache.load(dep_id) if cache.exist?(dep_id)
 
+        forge_api_url ||= DEFAULT_FORGE_URI
+
         result = []
         # Query the forge
-        fetch_all_module_releases(dependency.owner, dependency.name, resolver_ui) do |partial_releases|
+        fetch_all_module_releases(dependency.owner, dependency.name, forge_api_url, forge_proxy, resolver_ui) do |partial_releases|
           partial_releases.each do |release|
             result << Models::ModuleSpecification.new(
               name: release['module']['name'],
@@ -35,7 +38,7 @@ module PuppetfileResolver
         result
       end
 
-      def self.fetch_all_module_releases(owner, name, forge_api_url = DEFAULT_FORGE_URI, resolver_ui, &block)
+      def self.fetch_all_module_releases(owner, name, forge_api_url, forge_proxy, resolver_ui, &block)
         raise 'Requires a block to yield' unless block
         uri = ::URI.parse("#{forge_api_url}/v3/releases")
         params = { :module => "#{owner}-#{name}", :exclude_fields => 'readme changelog license reference tasks', :limit => 50 }
@@ -52,11 +55,27 @@ module PuppetfileResolver
           http_options[:ca_file] = PuppetfileResolver::Util.static_ca_cert_file if ENV['SSL_CERT_FILE'].nil?
 
           response = nil
-          Net::HTTP.start(uri.host, uri.port, http_options) do |http|
-            request = Net::HTTP::Get.new uri
-            response = http.request request
+
+          begin
+            ::PuppetfileResolver::Util.with_proxy_envvars(forge_proxy) do
+              Net::HTTP.start(uri.host, uri.port, http_options) do |http|
+                request = Net::HTTP::Get.new uri
+                response = http.request request
+              end
+            end
+          rescue SocketError => e
+            msg = "Unable to find module #{owner}-#{name} on #{forge_api_url}"
+            msg += forge_proxy ? " with proxy #{forge_proxy}: " : ": "
+            msg += e.message
+            raise msg
           end
-          raise "Expected HTTP Code 200, but received #{response.code} for URI #{uri}: #{response.inspect}" unless response.code == '200'
+
+          if response.code != '200'
+            msg = "Unable to find module #{owner}-#{name} on #{forge_api_url}"
+            msg += forge_proxy ? " with proxy #{forge_proxy}: " : ": "
+            msg += "#{response.code} #{response.msg}"
+            raise msg
+          end
 
           reply = ::JSON.parse(response.body)
           yield reply['results']
