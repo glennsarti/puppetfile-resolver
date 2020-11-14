@@ -88,7 +88,11 @@ if options[:debug]
 else
   ui = nil
 end
-opts = { cache: cache, ui: ui, module_paths: options[:module_paths], allow_missing_modules: !options[:strict] }
+
+config = PuppetfileResolver::SpecSearchers::Configuration.new
+config.local.puppet_module_paths = options[:module_paths]
+
+opts = { cache: cache, ui: ui, spec_searcher_configuration: config, allow_missing_modules: !options[:strict] }
 
 # Resolve
 result = resolver.resolve(opts)

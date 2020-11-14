@@ -1,11 +1,12 @@
 # frozen_string_literal: true
 
 require 'puppetfile-resolver/spec_searchers/common'
+require 'puppetfile-resolver/spec_searchers/git_configuration'
 
 module PuppetfileResolver
   module SpecSearchers
     module Git
-      def self.find_all(puppetfile_module, dependency, cache, resolver_ui)
+      def self.find_all(puppetfile_module, dependency, cache, resolver_ui, _config)
         dep_id = ::PuppetfileResolver::SpecSearchers::Common.dependency_cache_id(self, dependency)
         # Has the information been cached?
         return cache.load(dep_id) if cache.exist?(dep_id)
