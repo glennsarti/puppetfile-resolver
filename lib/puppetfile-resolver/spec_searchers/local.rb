@@ -1,18 +1,19 @@
 # frozen_string_literal: true
 
 require 'puppetfile-resolver/spec_searchers/common'
+require 'puppetfile-resolver/spec_searchers/local_configuration'
 
 module PuppetfileResolver
   module SpecSearchers
     module Local
-      def self.find_all(_puppetfile_module, puppet_module_paths, dependency, cache, resolver_ui)
+      def self.find_all(_puppetfile_module, dependency, cache, resolver_ui, config)
         dep_id = ::PuppetfileResolver::SpecSearchers::Common.dependency_cache_id(self, dependency)
         # Has the information been cached?
         return cache.load(dep_id) if cache.exist?(dep_id)
 
         result = []
         # Find the module in the modulepaths
-        puppet_module_paths.each do |module_path|
+        config.puppet_module_paths.each do |module_path|
           next unless Dir.exist?(module_path)
           module_dir = File.expand_path(File.join(module_path, dependency.name))
           next unless Dir.exist?(module_dir)

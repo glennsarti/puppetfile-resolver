@@ -5,27 +5,34 @@ require 'puppetfile-resolver/cache/base'
 require 'puppetfile-resolver/spec_searchers/forge'
 require 'puppetfile-resolver/spec_searchers/git'
 require 'puppetfile-resolver/spec_searchers/local'
+require 'puppetfile-resolver/spec_searchers/configuration'
 
 module PuppetfileResolver
   class ResolutionProvider
     include Molinillo::SpecificationProvider
 
     # options
-    #   module_paths : Array of paths
-    #   strict_mode  : [Boolean] Whether missing dependencies throw an error (default: false)
+    #   module_paths                : Array of paths (Deprecated)
+    #   strict_mode                 : [Boolean] Whether missing dependencies throw an error (default: false)
+    #   spec_searcher_configuration : PuppetfileResolver::SpecSearchers::Configuration
     def initialize(puppetfile_document, puppet_version, resolver_ui, options = {})
       require 'semantic_puppet'
 
       @puppetfile_document = puppetfile_document
       raise 'The UI object must be of type Molinillo::UI' if resolver_ui.nil? || !resolver_ui.is_a?(Molinillo::UI)
       @resolver_ui = resolver_ui
-      # TODO: This default crap should move to the resolve class and we just validate (and raise) here
-      @puppet_module_paths = options[:module_paths].nil? ? [] : options[:module_paths]
+      @spec_searcher_configuration = options[:spec_searcher_configuration] || PuppetfileResolver::SpecSearchers::Configuration.new
       @allow_missing_modules = options[:allow_missing_modules].nil? ? true : options[:allow_missing_modules] == true
       # There can be only one puppet specification in existance so we pre-load here.
       @puppet_specification = Models::PuppetSpecification.new(puppet_version)
       @module_info = {}
       @cache = options[:cache].nil? ? Cache::Base.new : options[:cache]
+
+      # Check for deprecated options
+      unless options[:module_paths].nil? # rubocop:disable Style/GuardClause
+        Warning.warn 'The use of the module_paths option has been deprecated'
+        @spec_searcher_configuration.local.puppet_module_paths = options[:module_paths]
+      end
     end
 
     # Search for the specifications that match the given dependency.
@@ -137,9 +144,9 @@ module PuppetfileResolver
       unless mod.nil?
         case mod.module_type
         when Puppetfile::FORGE_MODULE
-          @module_info[dependency.name] = safe_spec_search(dependency) { SpecSearchers::Forge.find_all(dependency, @cache, @resolver_ui) }
+          @module_info[dependency.name] = safe_spec_search(dependency) { SpecSearchers::Forge.find_all(dependency, @cache, @resolver_ui, @spec_searcher_configuration.forge) }
         when Puppetfile::GIT_MODULE
-          @module_info[dependency.name] = safe_spec_search(dependency) { SpecSearchers::Git.find_all(mod, dependency, @cache, @resolver_ui) }
+          @module_info[dependency.name] = safe_spec_search(dependency) { SpecSearchers::Git.find_all(mod, dependency, @cache, @resolver_ui, @spec_searcher_configuration.git) }
         else # rubocop:disable Style/EmptyElse
           # Errr.... Nothing
         end
@@ -147,13 +154,13 @@ module PuppetfileResolver
       return @module_info[dependency.name] unless @module_info[dependency.name].empty?
 
       # It's not in the Puppetfile, so perhaps it's in our modulepath?
-      @module_info[dependency.name] = safe_spec_search(dependency) { SpecSearchers::Local.find_all(mod, @puppet_module_paths, dependency, @cache, @resolver_ui) }
+      @module_info[dependency.name] = safe_spec_search(dependency) { SpecSearchers::Local.find_all(mod, dependency, @cache, @resolver_ui, @spec_searcher_configuration.local) }
       return @module_info[dependency.name] unless @module_info[dependency.name].empty?
 
       # It's not in the Puppetfile and not on disk, so perhaps it's on the Forge?
       # The forge needs an owner and name to be able to resolve
       if dependency.name && dependency.owner # rubocop:disable Style/IfUnlessModifier
-        @module_info[dependency.name] = safe_spec_search(dependency) { SpecSearchers::Forge.find_all(dependency, @cache, @resolver_ui) }
+        @module_info[dependency.name] = safe_spec_search(dependency) { SpecSearchers::Forge.find_all(dependency, @cache, @resolver_ui, @spec_searcher_configuration.forge) }
       end
 
       # If we can't find any specifications for the module and we're allowing missing modules

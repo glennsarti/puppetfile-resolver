@@ -4,6 +4,8 @@ root = File.join(__dir__,'..',)
 # Add the language server into the load path
 $LOAD_PATH.unshift(File.join(root,'lib'))
 
+FIXTURES_DIR = File.join(__dir__,'fixtures')
+
 # A cache which we can preload for the purposes of testing, mimicing
 # Local modules
 require 'puppetfile-resolver/cache/base'

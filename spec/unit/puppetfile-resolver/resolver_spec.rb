@@ -7,7 +7,7 @@ describe PuppetfileResolver::Resolver do
   let(:puppet_version) { nil }
   let(:subject) { PuppetfileResolver::Resolver.new(puppetfile_document, puppet_version) }
   let(:cache) { MockLocalModuleCache.new }
-  let(:default_resolve_options) { { cache: cache, module_paths: ['??does/not/exist'] } }
+  let(:default_resolve_options) { { cache: cache } }
   let(:resolve_options) { default_resolve_options }
 
   RSpec.shared_examples 'a resolver flag' do |flag|

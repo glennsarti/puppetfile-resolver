@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
+require 'puppetfile-resolver/util'
 require 'puppetfile-resolver/spec_searchers/common'
+require 'puppetfile-resolver/spec_searchers/forge_configuration'
 require 'uri'
 require 'net/http'
 require 'openssl'
@@ -9,9 +11,7 @@ require 'json'
 module PuppetfileResolver
   module SpecSearchers
     module Forge
-      DEFAULT_FORGE_URI ||= 'https://forgeapi.puppet.com'
-
-      def self.find_all(dependency, cache, resolver_ui)
+      def self.find_all(dependency, cache, resolver_ui, config)
         dep_id = ::PuppetfileResolver::SpecSearchers::Common.dependency_cache_id(self, dependency)
 
         # Has the information been cached?
@@ -19,7 +19,7 @@ module PuppetfileResolver
 
         result = []
         # Query the forge
-        fetch_all_module_releases(dependency.owner, dependency.name, resolver_ui) do |partial_releases|
+        fetch_all_module_releases(dependency.owner, dependency.name, resolver_ui, config) do |partial_releases|
           partial_releases.each do |release|
             result << Models::ModuleSpecification.new(
               name: release['module']['name'],
@@ -35,9 +35,9 @@ module PuppetfileResolver
         result
       end
 
-      def self.fetch_all_module_releases(owner, name, forge_api_url = DEFAULT_FORGE_URI, resolver_ui, &block)
+      def self.fetch_all_module_releases(owner, name, resolver_ui, config, &block)
         raise 'Requires a block to yield' unless block
-        uri = ::URI.parse("#{forge_api_url}/v3/releases")
+        uri = ::URI.parse("#{config.forge_api}/v3/releases")
         params = { :module => "#{owner}-#{name}", :exclude_fields => 'readme changelog license reference tasks', :limit => 50 }
         uri.query = ::URI.encode_www_form(params)
 
@@ -62,7 +62,7 @@ module PuppetfileResolver
           yield reply['results']
 
           break if reply['pagination'].nil? || reply['pagination']['next'].nil?
-          uri = ::URI.parse("#{forge_api_url}#{reply['pagination']['next']}")
+          uri = ::URI.parse("#{config.forge_api}#{reply['pagination']['next']}")
 
           # Circuit breaker in case the worst happens (max 1000 module releases)
           loops += 1

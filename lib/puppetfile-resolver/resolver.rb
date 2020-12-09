@@ -20,7 +20,8 @@ module PuppetfileResolver
 
     # options
     #   :cache => Cache Object
-    #   :module_paths => Array[String]
+    #   :module_paths => Array[String] (Deprecated)
+    #   :spec_searcher_configuration => PuppetfileResolver::SpecSearchers::Configuration
     def resolve(options = {})
       if options[:ui]
         raise 'The UI object must be of type Molinillo::UI' unless options[:ui].is_a?(Molinillo::UI)
