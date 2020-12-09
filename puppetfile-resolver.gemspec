@@ -16,7 +16,7 @@ Gem::Specification.new do |spec|
   spec.executables = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ['lib']
 
-  spec.required_ruby_version = '>= 2.1.9'
+  spec.required_ruby_version = '>= 2.5.3'
 
   spec.add_runtime_dependency 'molinillo', '~> 0.6'
   spec.add_runtime_dependency 'semantic_puppet', '~> 1.0'
