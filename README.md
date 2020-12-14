@@ -1,4 +1,4 @@
-![CI for Puppetfile Resolver](https://github.com/glennsarti/puppetfile-resolver/workflows/CI%20for%20Puppetfile%20Resolver/badge.svg)
+[![CI for Puppetfile Resolver](https://github.com/glennsarti/puppetfile-resolver/workflows/CI%20for%20Puppetfile%20Resolver/badge.svg)](https://github.com/glennsarti/puppetfile-resolver/actions?query=workflow%3A%22CI+for+Puppetfile+Resolver%22)
 [![Gem Version](https://img.shields.io/gem/v/puppetfile-resolver)](https://rubygems.org/gems/puppetfile-resolver)
 
 # Puppetfile Resolver
