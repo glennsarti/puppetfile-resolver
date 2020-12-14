@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.com/glennsarti/puppetfile-resolver.svg?branch=master)](https://travis-ci.com/glennsarti/puppetfile-resolver)
+![CI for Puppetfile Resolver](https://github.com/glennsarti/puppetfile-resolver/workflows/CI%20for%20Puppetfile%20Resolver/badge.svg)
 [![Gem Version](https://img.shields.io/gem/v/puppetfile-resolver)](https://rubygems.org/gems/puppetfile-resolver)
 
 # Puppetfile Resolver
