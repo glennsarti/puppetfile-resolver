@@ -18,6 +18,7 @@ class CommandLineParser
       cache_dir: nil,
       module_paths: [],
       path: nil,
+      proxy: nil,
       puppet_version: nil,
       strict: false
     }
@@ -39,6 +40,10 @@ class CommandLineParser
 
       opts.on('--debug', 'Output debug information. Default is no debug output') do
         args[:debug] = true
+      end
+
+      opts.on('--proxy=PROXY_URL', 'HTTP/S Proxy server to use. For example http://localhost:8888') do |proxy|
+        args[:proxy] = proxy
       end
 
       opts.on('-s', '--strict', 'Do not allow missing dependencies. Default false which marks dependencies as missing and does not raise an error.') do
@@ -91,6 +96,10 @@ end
 
 config = PuppetfileResolver::SpecSearchers::Configuration.new
 config.local.puppet_module_paths = options[:module_paths]
+unless options[:proxy].nil?
+  config.git.proxy = options[:proxy]
+  config.forge.proxy = options[:proxy]
+end
 
 opts = { cache: cache, ui: ui, spec_searcher_configuration: config, allow_missing_modules: !options[:strict] }
 
