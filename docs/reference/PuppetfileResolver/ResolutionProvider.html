@@ -206,7 +206,7 @@
   
 
   
-    <span class="summary_desc"><div class='inline'><p>options   module_paths : Array of paths   strict_mode  : [Boolean] Whether missing dependencies throw an error (default: false).</p>
+    <span class="summary_desc"><div class='inline'><p>options   module_paths                : Array of paths (Deprecated)   strict_mode                 : [Boolean] Whether missing dependencies throw an error (default: false)   spec_searcher_configuration : PuppetfileResolver::SpecSearchers::Configuration.</p>
 </div></span>
   
 </li>
@@ -367,8 +367,9 @@
 </h3><div class="docstring">
   <div class="discussion">
     <p>options
-  module_paths : Array of paths
-  strict_mode  : [Boolean] Whether missing dependencies throw an error (default: false)</p>
+  module_paths                : Array of paths (Deprecated)
+  strict_mode                 : [Boolean] Whether missing dependencies throw an error (default: false)
+  spec_searcher_configuration : PuppetfileResolver::SpecSearchers::Configuration</p>
 
 
   </div>
@@ -382,8 +383,6 @@
       <pre class="lines">
 
 
-16
-17
 18
 19
 20
@@ -395,10 +394,17 @@
 26
 27
 28
-29</pre>
+29
+30
+31
+32
+33
+34
+35
+36</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/puppetfile-resolver/resolution_provider.rb', line 16</span>
+      <pre class="code"><span class="info file"># File 'lib/puppetfile-resolver/resolution_provider.rb', line 18</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='id identifier rubyid_puppetfile_document'>puppetfile_document</span><span class='comma'>,</span> <span class='id identifier rubyid_puppet_version'>puppet_version</span><span class='comma'>,</span> <span class='id identifier rubyid_resolver_ui'>resolver_ui</span><span class='comma'>,</span> <span class='id identifier rubyid_options'>options</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_require'>require</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>semantic_puppet</span><span class='tstring_end'>&#39;</span></span>
@@ -406,13 +412,18 @@
   <span class='ivar'>@puppetfile_document</span> <span class='op'>=</span> <span class='id identifier rubyid_puppetfile_document'>puppetfile_document</span>
   <span class='id identifier rubyid_raise'>raise</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>The UI object must be of type Molinillo::UI</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>if</span> <span class='id identifier rubyid_resolver_ui'>resolver_ui</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span> <span class='op'>||</span> <span class='op'>!</span><span class='id identifier rubyid_resolver_ui'>resolver_ui</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>Molinillo</span><span class='op'>::</span><span class='const'>UI</span><span class='rparen'>)</span>
   <span class='ivar'>@resolver_ui</span> <span class='op'>=</span> <span class='id identifier rubyid_resolver_ui'>resolver_ui</span>
-  <span class='comment'># TODO: This default crap should move to the resolve class and we just validate (and raise) here
-</span>  <span class='ivar'>@puppet_module_paths</span> <span class='op'>=</span> <span class='id identifier rubyid_options'>options</span><span class='lbracket'>[</span><span class='symbol'>:module_paths</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span> <span class='op'>?</span> <span class='lbracket'>[</span><span class='rbracket'>]</span> <span class='op'>:</span> <span class='id identifier rubyid_options'>options</span><span class='lbracket'>[</span><span class='symbol'>:module_paths</span><span class='rbracket'>]</span>
+  <span class='ivar'>@spec_searcher_configuration</span> <span class='op'>=</span> <span class='id identifier rubyid_options'>options</span><span class='lbracket'>[</span><span class='symbol'>:spec_searcher_configuration</span><span class='rbracket'>]</span> <span class='op'>||</span> <span class='const'><span class='object_link'><a href="../PuppetfileResolver.html" title="PuppetfileResolver (module)">PuppetfileResolver</a></span></span><span class='op'>::</span><span class='const'>SpecSearchers</span><span class='op'>::</span><span class='const'>Configuration</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span>
   <span class='ivar'>@allow_missing_modules</span> <span class='op'>=</span> <span class='id identifier rubyid_options'>options</span><span class='lbracket'>[</span><span class='symbol'>:allow_missing_modules</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span> <span class='op'>?</span> <span class='kw'>true</span> <span class='op'>:</span> <span class='id identifier rubyid_options'>options</span><span class='lbracket'>[</span><span class='symbol'>:allow_missing_modules</span><span class='rbracket'>]</span> <span class='op'>==</span> <span class='kw'>true</span>
   <span class='comment'># There can be only one puppet specification in existance so we pre-load here.
 </span>  <span class='ivar'>@puppet_specification</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="Models.html" title="PuppetfileResolver::Models (module)">Models</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="Models/PuppetSpecification.html" title="PuppetfileResolver::Models::PuppetSpecification (class)">PuppetSpecification</a></span></span><span class='period'>.</span><span class='id identifier rubyid_new'><span class='object_link'><a href="Models/PuppetSpecification.html#initialize-instance_method" title="PuppetfileResolver::Models::PuppetSpecification#initialize (method)">new</a></span></span><span class='lparen'>(</span><span class='id identifier rubyid_puppet_version'>puppet_version</span><span class='rparen'>)</span>
   <span class='ivar'>@module_info</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span>
   <span class='ivar'>@cache</span> <span class='op'>=</span> <span class='id identifier rubyid_options'>options</span><span class='lbracket'>[</span><span class='symbol'>:cache</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span> <span class='op'>?</span> <span class='const'><span class='object_link'><a href="Cache.html" title="PuppetfileResolver::Cache (module)">Cache</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="Cache/Base.html" title="PuppetfileResolver::Cache::Base (class)">Base</a></span></span><span class='period'>.</span><span class='id identifier rubyid_new'><span class='object_link'><a href="Cache/Base.html#initialize-instance_method" title="PuppetfileResolver::Cache::Base#initialize (method)">new</a></span></span> <span class='op'>:</span> <span class='id identifier rubyid_options'>options</span><span class='lbracket'>[</span><span class='symbol'>:cache</span><span class='rbracket'>]</span>
+
+  <span class='comment'># Check for deprecated options
+</span>  <span class='kw'>unless</span> <span class='id identifier rubyid_options'>options</span><span class='lbracket'>[</span><span class='symbol'>:module_paths</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span> <span class='comment'># rubocop:disable Style/GuardClause
+</span>    <span class='const'>Warning</span><span class='period'>.</span><span class='id identifier rubyid_warn'>warn</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>The use of the module_paths option has been deprecated</span><span class='tstring_end'>&#39;</span></span>
+    <span class='ivar'>@spec_searcher_configuration</span><span class='period'>.</span><span class='id identifier rubyid_local'>local</span><span class='period'>.</span><span class='id identifier rubyid_puppet_module_paths'>puppet_module_paths</span> <span class='op'>=</span> <span class='id identifier rubyid_options'>options</span><span class='lbracket'>[</span><span class='symbol'>:module_paths</span><span class='rbracket'>]</span>
+  <span class='kw'>end</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -484,16 +495,16 @@ specifications, can safely be ignored.</p>
       <pre class="lines">
 
 
-120
-121
-122
-123
-124
-125
-126</pre>
+127
+128
+129
+130
+131
+132
+133</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/puppetfile-resolver/resolution_provider.rb', line 120</span>
+      <pre class="code"><span class="info file"># File 'lib/puppetfile-resolver/resolution_provider.rb', line 127</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_allow_missing?'>allow_missing?</span><span class='lparen'>(</span><span class='id identifier rubyid_dependency'>dependency</span><span class='rparen'>)</span>
   <span class='comment'># Puppet dependencies must _always_ be resolvable
@@ -573,12 +584,12 @@ only on the <code>specification</code> parameter.</p>
       <pre class="lines">
 
 
-70
-71
-72</pre>
+77
+78
+79</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/puppetfile-resolver/resolution_provider.rb', line 70</span>
+      <pre class="code"><span class="info file"># File 'lib/puppetfile-resolver/resolution_provider.rb', line 77</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_dependencies_for'>dependencies_for</span><span class='lparen'>(</span><span class='id identifier rubyid_specification'>specification</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_specification'>specification</span><span class='period'>.</span><span class='id identifier rubyid_dependencies'>dependencies</span><span class='lparen'>(</span><span class='ivar'>@cache</span><span class='comma'>,</span> <span class='ivar'>@resolver_ui</span><span class='rparen'>)</span>
@@ -603,13 +614,13 @@ only on the <code>specification</code> parameter.</p>
       <pre class="lines">
 
 
-58
-59
-60
-61</pre>
+65
+66
+67
+68</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/puppetfile-resolver/resolution_provider.rb', line 58</span>
+      <pre class="code"><span class="info file"># File 'lib/puppetfile-resolver/resolution_provider.rb', line 65</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_find_puppet_specifications'>find_puppet_specifications</span><span class='lparen'>(</span><span class='id identifier rubyid_dependency'>dependency</span><span class='rparen'>)</span>
   <span class='comment'># Puppet specifications are a bit special as there can be only one (Highlander style)
@@ -685,12 +696,12 @@ only on the <code>dependency</code> parameter.</p>
       <pre class="lines">
 
 
-80
-81
-82</pre>
+87
+88
+89</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/puppetfile-resolver/resolution_provider.rb', line 80</span>
+      <pre class="code"><span class="info file"># File 'lib/puppetfile-resolver/resolution_provider.rb', line 87</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_name_for'>name_for</span><span class='lparen'>(</span><span class='id identifier rubyid_dependency'>dependency</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_dependency'>dependency</span><span class='period'>.</span><span class='id identifier rubyid_name'>name</span>
@@ -715,12 +726,12 @@ only on the <code>dependency</code> parameter.</p>
       <pre class="lines">
 
 
-97
-98
-99</pre>
+104
+105
+106</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/puppetfile-resolver/resolution_provider.rb', line 97</span>
+      <pre class="code"><span class="info file"># File 'lib/puppetfile-resolver/resolution_provider.rb', line 104</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_name_for_explicit_dependency_source'>name_for_explicit_dependency_source</span>
   <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>Puppetfile</span><span class='tstring_end'>&#39;</span></span>
@@ -745,12 +756,12 @@ only on the <code>dependency</code> parameter.</p>
       <pre class="lines">
 
 
-101
-102
-103</pre>
+108
+109
+110</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/puppetfile-resolver/resolution_provider.rb', line 101</span>
+      <pre class="code"><span class="info file"># File 'lib/puppetfile-resolver/resolution_provider.rb', line 108</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_name_for_locking_dependency_source'>name_for_locking_dependency_source</span>
   <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>Puppetfile</span><span class='tstring_end'>&#39;</span></span>
@@ -846,12 +857,12 @@ context of the current <code>activated</code> dependency graph.</p>
       <pre class="lines">
 
 
-93
-94
-95</pre>
+100
+101
+102</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/puppetfile-resolver/resolution_provider.rb', line 93</span>
+      <pre class="code"><span class="info file"># File 'lib/puppetfile-resolver/resolution_provider.rb', line 100</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_requirement_satisfied_by?'>requirement_satisfied_by?</span><span class='lparen'>(</span><span class='id identifier rubyid_requirement'>requirement</span><span class='comma'>,</span> <span class='id identifier rubyid__activated'>_activated</span><span class='comma'>,</span> <span class='id identifier rubyid_spec'>spec</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_requirement'>requirement</span><span class='period'>.</span><span class='id identifier rubyid_satisified_by?'>satisified_by?</span><span class='lparen'>(</span><span class='id identifier rubyid_spec'>spec</span><span class='rparen'>)</span>
@@ -929,13 +940,6 @@ order, so the latest version ought to be last.</p>
       <pre class="lines">
 
 
-40
-41
-42
-43
-44
-45
-46
 47
 48
 49
@@ -945,10 +949,17 @@ order, so the latest version ought to be last.</p>
 53
 54
 55
-56</pre>
+56
+57
+58
+59
+60
+61
+62
+63</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/puppetfile-resolver/resolution_provider.rb', line 40</span>
+      <pre class="code"><span class="info file"># File 'lib/puppetfile-resolver/resolution_provider.rb', line 47</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_search_for'>search_for</span><span class='lparen'>(</span><span class='id identifier rubyid_dependency'>dependency</span><span class='rparen'>)</span>
   <span class='kw'>case</span> <span class='id identifier rubyid_dependency'>dependency</span>
@@ -997,18 +1008,18 @@ order, so the latest version ought to be last.</p>
       <pre class="lines">
 
 
-105
-106
-107
-108
-109
-110
-111
 112
-113</pre>
+113
+114
+115
+116
+117
+118
+119
+120</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/puppetfile-resolver/resolution_provider.rb', line 105</span>
+      <pre class="code"><span class="info file"># File 'lib/puppetfile-resolver/resolution_provider.rb', line 112</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_sort_dependencies'>sort_dependencies</span><span class='lparen'>(</span><span class='id identifier rubyid_dependencies'>dependencies</span><span class='comma'>,</span> <span class='id identifier rubyid_activated'>activated</span><span class='comma'>,</span> <span class='id identifier rubyid_conflicts'>conflicts</span><span class='rparen'>)</span> <span class='comment'># rubocop:disable Lint/UnusedMethodArgument You&#39;re drunk rubocop
 </span>  <span class='id identifier rubyid_dependencies'>dependencies</span><span class='period'>.</span><span class='id identifier rubyid_sort_by'>sort_by</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_dependency'>dependency</span><span class='op'>|</span>
@@ -1029,9 +1040,9 @@ order, so the latest version ought to be last.</p>
 </div>
 
       <div id="footer">
-  Generated on Wed Sep  9 20:20:16 2020 by
+  Generated on Wed Dec 16 15:34:17 2020 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.9.25 (ruby-2.5.1).
+  0.9.25 (ruby-2.7.2).
 </div>
 
     </div>

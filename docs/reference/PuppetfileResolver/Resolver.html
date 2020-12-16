@@ -217,7 +217,7 @@
   
 
   
-    <span class="summary_desc"><div class='inline'><p>options   :cache =&gt; Cache Object   :module_paths =&gt; Array[String].</p>
+    <span class="summary_desc"><div class='inline'><p>options   :cache =&gt; Cache Object   :module_paths =&gt; Array<a href="Deprecated">String</a>   :spec_searcher_configuration =&gt; PuppetfileResolver::SpecSearchers::Configuration.</p>
 </div></span>
   
 </li>
@@ -386,7 +386,8 @@
   <div class="discussion">
     <p>options
   :cache =&gt; Cache Object
-  :module_paths =&gt; Array[String]</p>
+  :module_paths =&gt; Array<a href="Deprecated">String</a>
+  :spec_searcher_configuration =&gt; PuppetfileResolver::SpecSearchers::Configuration</p>
 
 
   </div>
@@ -400,7 +401,6 @@
       <pre class="lines">
 
 
-24
 25
 26
 27
@@ -423,10 +423,11 @@
 44
 45
 46
-47</pre>
+47
+48</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/puppetfile-resolver/resolver.rb', line 24</span>
+      <pre class="code"><span class="info file"># File 'lib/puppetfile-resolver/resolver.rb', line 25</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_resolve'>resolve</span><span class='lparen'>(</span><span class='id identifier rubyid_options'>options</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
   <span class='kw'>if</span> <span class='id identifier rubyid_options'>options</span><span class='lbracket'>[</span><span class='symbol'>:ui</span><span class='rbracket'>]</span>
@@ -462,9 +463,9 @@
 </div>
 
       <div id="footer">
-  Generated on Wed Sep  9 20:20:16 2020 by
+  Generated on Wed Dec 16 15:34:17 2020 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.9.25 (ruby-2.5.1).
+  0.9.25 (ruby-2.7.2).
 </div>
 
     </div>
