@@ -9,7 +9,7 @@ Gem::Specification.new do |spec|
   spec.license = 'Apache-2.0'
   spec.homepage = 'https://glennsarti.github.io/puppetfile-resolver/'
   spec.summary = 'Dependency resolver for Puppetfiles'
-  spec.description = 'Resolves the Puppet Modules in a Puppetfile with a full dependency graph, including Puppet version checkspec.'
+  spec.description = 'Resolves the Puppet Modules in a Puppetfile with a full dependency graph, including Puppet version checks.'
 
   spec.files = Dir['puppetfile-cli.rb', 'README.md', 'LICENSE', 'lib/**/*']
   spec.test_files = Dir['spec/**/*']

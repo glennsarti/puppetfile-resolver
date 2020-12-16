@@ -6,6 +6,21 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## Unreleased
 
+## 0.5.0 - 2020-12-16
+
+### Added
+
+- ([GH-22](https://github.com/glennsarti/puppetfile-resolver/issues/22)) Add a formal configuration system
+- ([Commit](https://github.com/glennsarti/puppetfile-resolver/commit/9f96040ff0747ca78e5cc5cb3f53518a0af7b1dd)) Add support for HTTP Proxies ([beechtom](https://github.com/beechtom))
+
+### Changed
+
+- ([GH-21](https://github.com/glennsarti/puppetfile-resolver/issues/21)) Migrated to GitHub Actions
+
+### Removed
+
+- ([Commit](https://github.com/glennsarti/puppetfile-resolver/commit/5985bda7dd64524847981bbdb1b8c0a80b98419a)) Removed support for Ruby 2.1 (Puppet 4)
+
 ## 0.4.0 - 2020-09-09
 
 ### Fixed
