@@ -5,6 +5,7 @@ require 'puppetfile-resolver/spec_searchers/common'
 require 'puppetfile-resolver/spec_searchers/git_configuration'
 require 'puppetfile-resolver/spec_searchers/git/github'
 require 'puppetfile-resolver/spec_searchers/git/gitlab'
+require 'puppetfile-resolver/spec_searchers/git/gclone'
 
 module PuppetfileResolver
   module SpecSearchers
@@ -14,12 +15,13 @@ module PuppetfileResolver
         # Has the information been cached?
         return cache.load(dep_id) if cache.exist?(dep_id)
 
-        # We _could_ git clone this, but it'll take too long. So for now, just
-        # try and resolve github based repositories by crafting a URL
-        metadata = GitHub.metadata(puppetfile_module, resolver_ui, config)
-        metadata = GitLab.metadata(puppetfile_module, resolver_ui, config) if metadata.nil?
-
-        # TODO: Once we've exhausted using alternate methods lets just `git clone` it
+        # The git clone method takes around (1s) depending on repo size.  Not sure if the
+        # other methods take longer or shorter but I preserved the legacy code for now.
+        # Technically, the gclone class could replace the other classes and speed up
+        # this process here.
+        metadata = GitHub.metadata(puppetfile_module, resolver_ui, config) ||
+                   GitLab.metadata(puppetfile_module, resolver_ui, config) ||
+                   GClone.metadata(puppetfile_module, resolver_ui, config)
 
         if metadata.nil? || metadata.empty?
           # Cache that we couldn't find the metadata

@@ -3,7 +3,7 @@
 module PuppetfileResolver
   module SpecSearchers
     class GitConfiguration
-      attr_accessor :proxy
+      attr_accessor :proxy, :clone_dir
     end
   end
 end
