@@ -11,6 +11,7 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 ### Added
 
 - ([GH-33](https://github.com/glennsarti/puppetfile-resolver/issues/33)) Adds git clone method to search for metadata file
+- ([GH-29](https://github.com/glennsarti/puppetfile-resolver/issues/29)) Add GitLab URL support
 
 ## 0.5.0 - 2020-12-16
 
