@@ -6,6 +6,12 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## Unreleased
 
+## 0.6.0 - 2022-06-13
+
+### Added
+
+- ([GH-33](https://github.com/glennsarti/puppetfile-resolver/issues/33)) Adds git clone method to search for metadata file
+
 ## 0.5.0 - 2020-12-16
 
 ### Added

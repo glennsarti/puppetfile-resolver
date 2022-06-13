@@ -22,13 +22,13 @@ end
 task default: :spec
 
 namespace :ssl do
-  desc 'Download and save CA certs from https://curl.haxx.se/ca/cacert.pem'
+  desc 'Download and save CA certs from https://curl.se/ca/cacert.pem'
   task :vendor_ca_certs do
     require 'puppetfile-resolver/util'
     ca_cert_file = PuppetfileResolver::Util.static_ca_cert_file
 
     require 'uri'
-    uri = ::URI.parse('https://curl.haxx.se/ca/cacert.pem')
+    uri = ::URI.parse('https://curl.se/ca/cacert.pem')
 
     http_options = { :use_ssl => uri.class == URI::HTTPS }
     # This is a little naughty. But because we're trying to download the CA Cert file,
