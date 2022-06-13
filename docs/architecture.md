@@ -18,11 +18,11 @@ Note that a CLI is included (`puppetfile-cli.rb`) only as an example of how to c
 ## Architecture
 
 ``` text
-                    +-----------------+   +-----------------+   +-----------------+
-                    | Forge Searcher  |   |  Git Searcher   |   | Local Searcher  |
-                    +-------+---------+   +--------+--------+   +-------+---------+
-                            |                      |                    |
-                            +----------------------+--------------------+
+                    +-----------------+   +-----------------+   +-----------------+   +---------------------+
+                    | Forge Searcher  |   |  Git Searcher   |   | Local Searcher  |   | Other searchers.... |
+                    +-------+---------+   +--------+--------+   +-------+---------+   +----------+----------+
+                            |                      |                    |                        |
+                            +----------------------+--------------------+------------------------+---- ...
                                                    |
                                                    |
                                                    V
@@ -81,7 +81,6 @@ module_list.each do |mod_name|
 end
 ```
 
-
 ### Puppetfile Document Validation
 
 Even though a Puppetfile can be parsed, doesn't mean it's valid. For example, defining a module twice.
@@ -92,7 +91,7 @@ Given a Puppetfile document model, the library can attempt to recursively resolv
 
 ### Module Searchers
 
-The Puppetfile resolution needs information about all of the available modules and versions, and does this through calling various Specification Searchers. Currently Puppet Forge, GitHub, GitLab and Local FileSystem searchers are implemented. Additional searchers could be added, for example SVN.
+The Puppetfile resolution needs information about all of the available modules and versions, and does this through calling various Specification Searchers. Currently Puppet Forge, GitHub, GitLab, Git Clone and Local FileSystem searchers are implemented. Additional searchers could be added, for example SVN.
 
 The result is a dependency graph listing all of the modules, dependencies and version information.
 

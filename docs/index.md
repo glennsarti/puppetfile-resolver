@@ -22,6 +22,18 @@ This library includes all of the code to parse a Puppetfile and then calculate a
 
 **Note** This library is in active development!
 
+## Supported Searchers
+
+See "Module Searchers" in the [Architecture](./architecture) for more information about searchers.
+
+Currently supported searchers:
+
+* Git Clone
+* GitHub
+* GitLab
+* Local FileSystem
+* Puppet Forge
+
 ## To Do
 
 - Could do with more tests
