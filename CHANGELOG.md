@@ -6,11 +6,17 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## Unreleased
 
+## 0.6.1 - 2022-06-23
+
+### Fixed
+
+- ([GH-36](https://github.com/glennsarti/puppetfile-resolver/pull/36)) Fix bugs in Git spec searchers ([beechtom](https://github.com/beechtom))
+
 ## 0.6.0 - 2022-06-13
 
 ### Added
 
-- ([GH-33](https://github.com/glennsarti/puppetfile-resolver/issues/33)) Adds git clone method to search for metadata file
+- ([GH-33](https://github.com/glennsarti/puppetfile-resolver/issues/33)) Adds git clone method to search for metadata file ([logicminds](https://github.com/logicminds))
 - ([GH-29](https://github.com/glennsarti/puppetfile-resolver/issues/29)) Add GitLab URL support
 
 ## 0.5.0 - 2020-12-16
