@@ -45,7 +45,7 @@ module PuppetfileResolver
 
           if response.code != '200'
             resolver_ui.debug(err_msg + "Expected HTTP Code 200, but received #{response.code}")
-            return ''
+            return nil
           end
           response.body
         end
