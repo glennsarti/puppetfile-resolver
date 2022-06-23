@@ -6,8 +6,7 @@ require 'json'
 
 describe PuppetfileResolver::SpecSearchers::Git::GClone do
   PuppetfileModule = Struct.new(:remote, :ref, :branch, :commit, :tag, keyword_init: true)
-  config = PuppetfileResolver::SpecSearchers::Configuration.new
-  config.local.puppet_module_paths = [File.join(FIXTURES_DIR, 'modulepath')]
+  config = PuppetfileResolver::SpecSearchers::GitConfiguration.new
 
   let(:url) do
     'https://github.com/puppetlabs/puppetlabs-powershell'
@@ -39,7 +38,7 @@ describe PuppetfileResolver::SpecSearchers::Git::GClone do
 
   context 'invalid url' do
     let(:url) do
-      'https://github.com/puppetlabs/puppetlabs-powershellbad'
+      'https://user:password@github.com/puppetlabs/puppetlabs-powershellbad'
     end
 
     it 'throws exception' do

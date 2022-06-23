@@ -47,13 +47,13 @@ module PuppetfileResolver
         def self.clone_and_read_file(url, ref, file, config)
           clone_cmd = ['git', 'clone', '--bare', '--depth=1', '--single-branch']
           err_msg = ''
-          if config.git.proxy
-            err_msg += " with proxy #{config.git.proxy}: "
-            proxy = "--config \"http.proxy=#{config.git.proxy}\" --config \"https.proxy=#{config.proxy}\""
+          if config.proxy
+            err_msg += " with proxy #{config.proxy}: "
+            proxy = "--config \"http.proxy=#{config.proxy}\" --config \"https.proxy=#{config.proxy}\""
             clone_cmd.push(proxy)
           end
 
-          Dir.mktmpdir(nil, config.git.clone_dir) do |dir|
+          Dir.mktmpdir(nil, config.clone_dir) do |dir|
             clone_cmd.push("--branch=#{ref}") if ref != 'HEAD'
             clone_cmd.push(url, dir)
             out, err_out, process = ::PuppetfileResolver::Util.run_command(clone_cmd)
