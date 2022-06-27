@@ -57,7 +57,7 @@ module PuppetfileResolver
             clone_cmd.push("--branch=#{ref}") if ref != 'HEAD'
             clone_cmd.push(url, dir)
             out, err_out, process = ::PuppetfileResolver::Util.run_command(clone_cmd)
-            err_msg += out
+            err_msg += err_out
             raise err_msg unless process.success?
             Dir.chdir(dir) do
               content, err_out, process = ::PuppetfileResolver::Util.run_command(['git', 'show', "#{ref}:#{file}"])
