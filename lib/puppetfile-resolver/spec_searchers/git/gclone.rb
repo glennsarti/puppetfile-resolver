@@ -45,20 +45,21 @@ module PuppetfileResolver
         # @param file [String] the file you wish to read
         # @returns [String] the content of the file
         def self.clone_and_read_file(url, ref, file, config)
-          clone_cmd = ['git', 'clone', '--bare', '--depth=1', '--single-branch']
-          err_msg = ''
-          if config.proxy
-            err_msg += " with proxy #{config.proxy}: "
-            proxy = "--config \"http.proxy=#{config.proxy}\" --config \"https.proxy=#{config.proxy}\""
-            clone_cmd.push(proxy)
-          end
-
           Dir.mktmpdir(nil, config.clone_dir) do |dir|
-            clone_cmd.push("--branch=#{ref}") if ref != 'HEAD'
-            clone_cmd.push(url, dir)
-            out, err_out, process = ::PuppetfileResolver::Util.run_command(clone_cmd)
-            err_msg += err_out
-            raise err_msg unless process.success?
+            clone_cmd = ['git', 'clone', url, dir]
+            clone_cmd += ['--config', "http.proxy=#{config.proxy}", '--config', "https.proxy=#{config.proxy}"] if config.proxy
+
+            _out, err_out, process = ::PuppetfileResolver::Util.run_command(clone_cmd)
+
+            unless process.success?
+              msg = if config.proxy
+                      "Cloning #{url} with proxy #{config.proxy} failed: #{err_out}"
+                    else
+                      "Cloning #{url} failed: #{err_out}"
+                    end
+              raise msg
+            end
+
             Dir.chdir(dir) do
               content, err_out, process = ::PuppetfileResolver::Util.run_command(['git', 'show', "#{ref}:#{file}"])
               raise 'InvalidContent' unless process.success? && content.length > 2

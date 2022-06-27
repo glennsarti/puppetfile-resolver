@@ -23,10 +23,20 @@ describe PuppetfileResolver::SpecSearchers::Git::GClone do
       expect(JSON.parse(content)['name']).to eq('puppetlabs-powershell')
     end
 
-    context 'with ref' do
-
+    context 'with tag' do
       let(:puppetfile_module) do
         PuppetfileModule.new(remote: url, ref: '2.1.2')
+      end
+
+      it 'reads metadata' do
+        content = subject.metadata(puppetfile_module, Logger.new(STDERR), config)
+        expect(JSON.parse(content)['name']).to eq('puppetlabs-powershell')
+      end
+    end
+
+    context 'with commit' do
+      let(:puppetfile_module) do
+        PuppetfileModule.new(remote: url, ref: '9276de695798097e8471b877a18df27f764eecda')
       end
 
       it 'reads metadata' do
