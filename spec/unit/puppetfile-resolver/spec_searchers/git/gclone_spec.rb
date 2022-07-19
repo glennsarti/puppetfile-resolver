@@ -44,6 +44,18 @@ describe PuppetfileResolver::SpecSearchers::Git::GClone do
         expect(JSON.parse(content)['name']).to eq('puppetlabs-powershell')
       end
     end
+
+    context 'with invalid ref' do
+      let(:puppetfile_module) do
+        PuppetfileModule.new(remote: url, ref: '8f7d5ea3ef49dadc5e166d5d802d091abc4b02bc')
+      end
+
+      it 'errors gracefully' do
+        expect { subject.metadata(puppetfile_module, Logger.new(STDERR), config) }.to raise_error(
+          /Could not find metadata\.json for ref .* at .*/
+        )
+      end
+    end
   end
 
   context 'invalid url' do

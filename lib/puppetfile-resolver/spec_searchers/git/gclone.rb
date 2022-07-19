@@ -12,6 +12,8 @@ module PuppetfileResolver
   module SpecSearchers
     module Git
       module GClone
+        METADATA_FILE = 'metadata.json'
+
         # @summary clones the remote url and reads the metadata file
         # @returns [String] the content of the metadata file
         def self.metadata(puppetfile_module, resolver_ui, config)
@@ -25,8 +27,6 @@ module PuppetfileResolver
           return nil if repo_url.nil?
           return nil unless valid_http_url?(repo_url)
 
-          metadata_file = 'metadata.json'
-
           ref = puppetfile_module.ref ||
                 puppetfile_module.tag ||
                 puppetfile_module.commit ||
@@ -35,7 +35,7 @@ module PuppetfileResolver
 
           resolver_ui.debug { "Querying git repository #{repo_url}" }
 
-          clone_and_read_file(repo_url, ref, metadata_file, config)
+          clone_and_read_file(repo_url, ref, config)
         end
 
         # @summary clones the git url and reads the file at the given ref
@@ -44,25 +44,37 @@ module PuppetfileResolver
         # @param ref [String] the git ref, branch, commit, tag
         # @param file [String] the file you wish to read
         # @returns [String] the content of the file
-        def self.clone_and_read_file(url, ref, file, config)
+        def self.clone_and_read_file(url, ref, config)
           Dir.mktmpdir(nil, config.clone_dir) do |dir|
-            clone_cmd = ['git', 'clone', url, dir]
-            clone_cmd += ['--config', "http.proxy=#{config.proxy}", '--config', "https.proxy=#{config.proxy}"] if config.proxy
+            clone = ['git', 'clone', url, dir]
+            clone += ['--config', "http.proxy=#{config.proxy}", '--config', "https.proxy=#{config.proxy}"] if config.proxy
 
-            _out, err_out, process = ::PuppetfileResolver::Util.run_command(clone_cmd)
+            bare_clone = clone + ['--bare', '--depth=1']
+            bare_clone.push("--branch=#{ref}") unless ref == 'HEAD'
+
+            # Try to clone a bare repository. If that fails, fall back to a full clone.
+            # Cloning might fail because the repo does not exist or is otherwise
+            # inaccessible, but it can also fail because cloning a bare repository from
+            # a commit/SHA1 fails. Falling back to a full clone ensures that we support
+            # commits/SHA1s like Puppetfile does.
+            _stdout, _stderr, process = ::PuppetfileResolver::Util.run_command(bare_clone)
 
             unless process.success?
-              msg = if config.proxy
-                      "Cloning #{url} with proxy #{config.proxy} failed: #{err_out}"
-                    else
-                      "Cloning #{url} failed: #{err_out}"
-                    end
-              raise msg
+              _stdout, stderr, process = ::PuppetfileResolver::Util.run_command(clone)
+
+              unless process.success?
+                msg = if config.proxy
+                        "Cloning #{url} with proxy #{config.proxy} failed: #{stderr}"
+                      else
+                        "Cloning #{url} failed: #{stderr}"
+                      end
+                raise msg
+              end
             end
 
             Dir.chdir(dir) do
-              content, err_out, process = ::PuppetfileResolver::Util.run_command(['git', 'show', "#{ref}:#{file}"])
-              raise 'InvalidContent' unless process.success? && content.length > 2
+              content, stderr, process = ::PuppetfileResolver::Util.run_command(['git', 'show', "#{ref}:#{METADATA_FILE}"])
+              raise "Could not find #{METADATA_FILE} for ref #{ref} at #{url}: #{stderr}" unless process.success?
               return content
             end
           end
