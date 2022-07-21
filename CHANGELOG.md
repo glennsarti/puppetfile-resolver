@@ -6,6 +6,12 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## Unreleased
 
+## 0.6.2 - 2022-07-21
+
+### Fixed
+
+- ([GH-38](https://github.com/glennsarti/puppetfile-resolver/pull/38)) Support using commits for GClone spec searcher, correctly print errors ([beechtom](https://github.com/beechtom))
+
 ## 0.6.1 - 2022-06-23
 
 ### Fixed
