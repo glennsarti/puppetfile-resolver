@@ -21,7 +21,7 @@ module PuppetfileResolver
           rescue StandardError, LoadError => e
             # Find the originating error from within the puppetfile
             loc = e.backtrace_locations
-                   .select { |item| item.absolute_path == PUPPETFILE_MONIKER }
+                   .select { |item| item.path == PUPPETFILE_MONIKER }
                    .first
             start_line_number = loc.nil? ? 0 : loc.lineno - 1 # Line numbers from ruby are base 1
             end_line_number = loc.nil? ? puppetfile_contents.lines.count - 1 : loc.lineno - 1 # Line numbers from ruby are base 1

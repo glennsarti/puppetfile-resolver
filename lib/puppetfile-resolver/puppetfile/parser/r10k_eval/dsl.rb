@@ -41,7 +41,7 @@ module PuppetfileResolver
 
           def find_load_line_number
             loc = Kernel.caller_locations
-                        .find { |call_loc| call_loc.absolute_path == ::PuppetfileResolver::Puppetfile::Parser::R10KEval::PUPPETFILE_MONIKER }
+                        .find { |call_loc| call_loc.path == ::PuppetfileResolver::Puppetfile::Parser::R10KEval::PUPPETFILE_MONIKER }
             loc.nil? ? 0 : loc.lineno - 1 # Line numbers from ruby are base 1
           end
         end
