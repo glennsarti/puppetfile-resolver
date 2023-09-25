@@ -17,6 +17,8 @@ group :development do
   gem "yard",          :require => false
   gem 'redcarpet',     :require => false
   gem 'github-markup', :require => false
+  # webrick is no longer bundled with ruby 3.x or later
+  gem "webrick",       :require => false
 end
 
 # Evaluate Gemfile.local and ~/.gemfile if they exist
