@@ -10,6 +10,11 @@ layout: default
 
 ---
 
+⚠⚠⚠ This project is no longer being maintained ⚠⚠⚠
+
+It's is now forked by [Puppet (nee Puppetlabs)](https://github.com/puppetlabs/puppetfile-resolver), and Puppet now owns the [Ruby Gem](https://rubygems.org/gems/puppetfile-resolver).
+
+
 # Puppetfile Resolver
 
 The [Puppetfile](https://puppet.com/docs/pe/latest/puppetfile.html) is used by Puppet to manage the collection of modules used by a Puppet master. The Puppetfile is then used by tools like [R10K](https://github.com/puppetlabs/r10k) and [Code Manager](https://puppet.com/docs/pe/latest/code_mgr_how_it_works.html#how-code-manager-works) to download and install the required modules.

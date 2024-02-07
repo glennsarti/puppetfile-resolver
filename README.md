@@ -1,3 +1,9 @@
+⚠⚠⚠ This repository is no longer being maintained ⚠⚠⚠
+
+It's is now forked by [Puppet (nee Puppetlabs)](https://github.com/puppetlabs/puppetfile-resolver), and Puppet now owns the [Ruby Gem](https://rubygems.org/gems/puppetfile-resolver).
+
+---
+
 [![CI for Puppetfile Resolver](https://github.com/glennsarti/puppetfile-resolver/workflows/CI%20for%20Puppetfile%20Resolver/badge.svg)](https://github.com/glennsarti/puppetfile-resolver/actions?query=workflow%3A%22CI+for+Puppetfile+Resolver%22)
 [![Gem Version](https://img.shields.io/gem/v/puppetfile-resolver)](https://rubygems.org/gems/puppetfile-resolver)
 
